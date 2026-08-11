@@ -43,6 +43,16 @@ backend-journey/
 - **业务驱动学习**：按业务类型（内容型→交易型→社交型）递进，不是技术点堆砌
 - **自适应协议**：前期慢（语法+对比），后期快（直接方案+代码），AI 根据进度自动调整
 
+## 配套前端项目
+
+每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript：
+
+| 后端项目 | 前端仓库 | GitHub 分支 |
+|---------|---------|------------|
+| bj-01-cms | [frontend-journey](https://github.com/readant/frontend-journey) | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
+
+> 前端仓库本地路径等私有信息见 `.cursor/rules/local.mdc`（已加入 .gitignore，仅本地可见）
+
 ## 用户偏好与长期约束
 
 - 所有项目以能写入简历为标准，不做玩具 demo
