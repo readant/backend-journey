@@ -45,13 +45,10 @@ backend-journey/
 
 ## Git 提交规范
 
-本项目采用 [Conventional Commits](https://www.conventionalcommits.org/) 规范，按阶段和功能拆分提交：
+采用 Conventional Commits 规范，按阶段和功能拆分提交：
 
 ```
 <type>(<scope>): <description>
-
-# type: feat / fix / chore / docs / refactor / test
-# scope: phase1 / phase2 / phase3 / phase4 / infrastructure
 ```
 
 示例：
@@ -61,6 +58,17 @@ feat(phase1): 骨架搭建 - Maven + Spring Boot + 公共基础 + Health API
 feat(phase2): 管理员与权限 - CRUD + BCrypt登录 + RBAC角色权限
 chore: 初始化项目基础设施
 ```
+
+## 配套前端项目
+
+每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript：
+
+| 后端项目 | 前端路径 | GitHub 分支 |
+|---------|---------|------------|
+| bj-01-cms | `practices/pj-01-cms-frontend` | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
+
+- **本地位置**: `E:\Projects0\Trae\frontend-journey`
+- **GitHub**: `https://github.com/readant/frontend-journey`
 
 ## 快速开始
 
