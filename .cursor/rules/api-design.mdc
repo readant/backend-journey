@@ -1,0 +1,72 @@
+---
+description: "RESTful API 设计规范、统一返回、参数校验"
+globs: ["**/*Controller.java"]
+---
+
+# API 设计规范
+
+## 1. 路径与请求方法
+
+- 使用**名词复数**表示资源：`/api/v1/articles`、`/api/v1/categories`
+- 遵循 RESTful 语义：
+
+| 操作 | 方法 | 路径示例 |
+|------|------|----------|
+| 查询列表 | GET | `/api/v1/articles` |
+| 查询单个 | GET | `/api/v1/articles/{id}` |
+| 新增 | POST | `/api/v1/articles` |
+| 全量更新 | PUT | `/api/v1/articles/{id}` |
+| 部分更新 | PATCH | `/api/v1/articles/{id}` |
+| 删除 | DELETE | `/api/v1/articles/{id}` |
+
+## 2. 统一返回格式
+
+所有接口返回 `R` 对象：
+
+```java
+R.success(data);           // code=200, msg="success", data=...
+R.error("错误信息");        // code=500, msg="错误信息"
+R.error(400, "参数错误");   // code=400, msg="参数错误"
+```
+
+## 3. 参数校验
+
+使用 `jakarta.validation` 注解：
+
+```java
+public class ArticleCreateReq {
+    @NotBlank(message = "标题不能为空")
+    @Size(max = 100, message = "标题不超过100字")
+    private String title;
+
+    @NotNull(message = "栏目ID不能为空")
+    private Long categoryId;
+}
+```
+
+Controller 方法加 `@Valid`：
+
+```java
+@PostMapping("/api/v1/articles")
+public R createArticle(@Valid @RequestBody ArticleCreateReq req) { ... }
+```
+
+全局异常处理器统一捕获 `MethodArgumentNotValidException`，返回标准 R 对象。
+
+## 4. 分页约定
+
+请求参数：`pageNum`（页码，从 1 开始）、`pageSize`（每页条数，默认 10，最大 100）
+
+返回结构：
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "records": [...],
+    "total": 100,
+    "pageNum": 1,
+    "pageSize": 10
+  }
+}
+```
