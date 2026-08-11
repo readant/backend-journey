@@ -19,6 +19,8 @@
 
 从零开始，一步步搭建企业级应用。
 
+> 🎯 **前后端配套学习**：每个后端项目都配有对应的 Vue 3 前端实现，前后端联动，完整还原真实项目开发流程。前端仓库见文末「[配套前端项目](#配套前端项目)」。
+
 </div>
 
 ---
@@ -78,7 +80,7 @@ backend-journey/
 
 ## 配套前端项目
 
-每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript：
+每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript，与后端接口真实联调：
 
 | 后端项目 | 前端项目 |
 |---------|---------|
@@ -86,6 +88,8 @@ backend-journey/
 | bj-02-ecommerce | pj-02-ecommerce-frontend（待创建） |
 | bj-03-community | pj-03-community-frontend（待创建） |
 | bj-04-saas | pj-04-saas-frontend（待创建） |
+
+> 前端学习同样遵循「项目驱动」路线，按业务类型递进，可与本仓库各后端项目一一对应。
 
 ---
 
