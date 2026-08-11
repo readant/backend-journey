@@ -86,5 +86,4 @@ backend-journey/
 |---------|---------|------------|
 | bj-01-cms | `practices/pj-01-cms-frontend` | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
 
-- **本地位置**: `E:\Projects0\Trae\frontend-journey`
-- **GitHub**: `https://github.com/readant/frontend-journey`
+> 本地路径等私有信息见 `.cursor/rules/local.mdc`（已加入 .gitignore，仅本地可见）
