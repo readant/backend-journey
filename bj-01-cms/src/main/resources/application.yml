@@ -1,0 +1,37 @@
+# 兴华小组 - 企业官网配置
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bj-01-cms
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/bj_cms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+app:
+  upload:
+    path: uploads
+    url-prefix: /uploads
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
