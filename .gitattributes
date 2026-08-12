@@ -1,0 +1,19 @@
+# 统一行尾策略
+# text=auto：让 Git 自动识别文本文件；eol=lf：仓库内统一存储为 LF
+# 消除 Windows(core.autocrlf=true) 与跨平台协作者的 CRLF/LF 差异噪音
+* text=auto eol=lf
+
+# 二进制文件：Git 不做任何行尾转换
+*.jar binary
+*.class binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
