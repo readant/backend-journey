@@ -60,6 +60,7 @@ backend-journey/
 ├── bj-03-community/        # 项目三：社区/论坛（待创建）
 ├── bj-04-saas/             # 项目四：SaaS 工作台（待创建）
 ├── docs/cheatsheet/        # 跨项目速查卡片
+├── docs/learning/          # Java 语法学习导航（零基础 → 能看代码）
 ├── .cursor/rules/          # Cursor AI 规则（8条）
 ├── .gitignore
 ├── AGENTS.md               # Cursor 代理说明
@@ -132,7 +133,8 @@ docs: 更新项目 README 和速查卡片
 
 ## 学习进度
 
-详见 [知识地图](.cursor/rules/knowledge-map.mdc) 和 [速查卡片](docs/cheatsheet/INDEX.md)。
+- **零基础入门**：先走 [Java 语法学习导航](docs/learning/README.md)（语法层），再看实战代码
+- **进度追踪**：详见 [知识地图](.cursor/rules/knowledge-map.mdc) 和 [速查卡片](docs/cheatsheet/INDEX.md)
 
 ---
 
