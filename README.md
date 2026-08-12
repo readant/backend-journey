@@ -19,7 +19,7 @@
 
 从零开始，一步步搭建企业级应用。
 
-> 🎯 **前后端配套学习**：每个后端项目都配有对应的 Vue 3 前端实现，前后端联动，完整还原真实项目开发流程。前端仓库见文末「[配套前端项目](#配套前端项目)」。
+> 🎯 **前后端配套学习**：每个后端项目都有对应的 Vue 3 前端实现（一个后端可能对应「管理后台 + 前台门户」多个应用），前后端联动，完整还原真实项目开发流程。前端仓库见文末「[配套前端项目](#配套前端项目)」。
 
 </div>
 
@@ -80,11 +80,11 @@ backend-journey/
 
 ## 配套前端项目
 
-每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript，与后端接口真实联调：
+每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript，与后端接口真实联调。一个后端项目可能对应多个前端应用（管理后台 + 前台门户）：
 
-| 后端项目 | 前端项目 |
+| 后端项目 | 前端应用 |
 |---------|---------|
-| bj-01-cms | [pj-01-cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
+| bj-01-cms | [pj-01-cms-admin（管理后台）](https://github.com/readant/frontend-journey/tree/project/cms-frontend)、[pj-01-cms-portal（前台门户）](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
 | bj-02-ecommerce | pj-02-ecommerce-frontend（待创建） |
 | bj-03-community | pj-03-community-frontend（待创建） |
 | bj-04-saas | pj-04-saas-frontend（待创建） |

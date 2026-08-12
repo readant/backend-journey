@@ -47,9 +47,9 @@ backend-journey/
 
 每个后端项目都有对应的前端实现，使用 Vue 3 + Vite + TypeScript：
 
-| 后端项目 | 前端仓库 | GitHub 分支 |
+| 后端项目 | 前端应用 | GitHub 分支 |
 |---------|---------|------------|
-| bj-01-cms | [frontend-journey](https://github.com/readant/frontend-journey) | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
+| bj-01-cms | [pj-01-cms-admin](https://github.com/readant/frontend-journey/tree/project/cms-frontend)（管理后台）、[pj-01-cms-portal](https://github.com/readant/frontend-journey/tree/project/cms-frontend)（前台门户） | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
 
 > 前端仓库本地路径等私有信息见 `.cursor/rules/local.mdc`（已加入 .gitignore，仅本地可见）
 
