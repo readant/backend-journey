@@ -115,10 +115,22 @@ open http://localhost:8080/swagger-ui.html
 
 ## Git 提交规范
 
-采用 Conventional Commits 规范，按阶段和功能拆分提交：
+采用 Conventional Commits + GitHub Flow 分支模型，按阶段和功能拆分提交：
 
 ```
 <type>(<scope>): <description>
+```
+
+**分支规范（强制）**：禁止直接在 `main` 提交。所有改动先从 `main` 拉出分支，用 `--no-ff` 合回后删除：
+
+```bash
+git checkout main && git pull
+git checkout -b feature/xxx        # 或 fix/xxx、docs/xxx
+# ...开发并拆分提交...
+git checkout main
+git merge --no-ff feature/xxx -m "Merge branch 'feature/xxx' into main"
+git push origin main
+git branch -d feature/xxx
 ```
 
 示例：
