@@ -60,3 +60,4 @@ backend-journey/
 - 中文注释和解释
 - Maven 构建，不用 Gradle
 - Java 17 上限
+- **Git 分支规范（GitHub Flow）**：禁止直接在 `main` 提交，`main` 永远保持可发布、干净；所有改动必须从 `main` 拉出 `feature/fix/docs` 分支，用 `--no-ff` 合回并删除分支。完整流程见 `.cursor/rules/git-commit.mdc`
