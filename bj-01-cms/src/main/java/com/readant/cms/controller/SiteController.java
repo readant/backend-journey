@@ -42,6 +42,11 @@ public class SiteController {
         return R.success(articleService.getById(id));
     }
 
+    @GetMapping("/products/{id}")
+    public R<?> productDetail(@PathVariable Long id) {
+        return R.success(productService.getById(id));
+    }
+
     @GetMapping("/articles")
     public R<?> articleList(
             @RequestParam(defaultValue = "1") int pageNum,
