@@ -24,5 +24,9 @@ application-local.yml
 # Uploads
 uploads/
 
-# Cursor 本地规则（不上传到 GitHub）
+# Cursor 本地规则 + 私有路径（不上传到 GitHub）
 .cursor/rules/local.mdc
+docs/standards/local-paths.md
+
+# 草稿箱
+drafts/
