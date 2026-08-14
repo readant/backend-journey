@@ -3,10 +3,9 @@ package com.readant.cms.controller;
 import com.readant.cms.common.R;
 import com.readant.cms.entity.Category;
 import com.readant.cms.service.CategoryService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 栏目管理接口

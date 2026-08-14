@@ -9,13 +9,12 @@ import com.readant.cms.mapper.CategoryMapper;
 import com.readant.cms.mapper.ProductMapper;
 import com.readant.cms.service.DashboardService;
 import com.readant.cms.service.ProductCategoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * 数据看板统计 Service 实现
@@ -54,10 +53,10 @@ public class DashboardServiceImpl implements DashboardService {
 
     private Map<String, Object> buildArticleStatus() {
         Map<String, Object> articleStatus = new HashMap<>();
-        articleStatus.put("draft", articleMapper.selectCount(
-                new LambdaQueryWrapper<Article>().eq(Article::getStatus, 0)));
-        articleStatus.put("published", articleMapper.selectCount(
-                new LambdaQueryWrapper<Article>().eq(Article::getStatus, 1)));
+        articleStatus.put(
+                "draft", articleMapper.selectCount(new LambdaQueryWrapper<Article>().eq(Article::getStatus, 0)));
+        articleStatus.put(
+                "published", articleMapper.selectCount(new LambdaQueryWrapper<Article>().eq(Article::getStatus, 1)));
         return articleStatus;
     }
 
@@ -88,8 +87,12 @@ public class DashboardServiceImpl implements DashboardService {
             }
         }
         result.put("days", byDay.keySet().stream().sorted().toList());
-        result.put("counts", byDay.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue).toList());
+        result.put(
+                "counts",
+                byDay.entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .map(Map.Entry::getValue)
+                        .toList());
         return result;
     }
 }

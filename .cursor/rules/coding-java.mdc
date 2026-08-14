@@ -34,3 +34,10 @@ globs: ["**/*.java"]
 - 业务异常抛 BusinessException（受业务控制，用户能理解的错误）
 - 系统异常直接抛 RuntimeException（意料之外，需要排查代码）
 - 禁止 catch(Exception e) {} 吞异常不处理
+
+# 6. 格式规范
+- 唯一权威：Spotless + palantir-java-format（已配置于 bj-01-cms/pom.xml）
+- 提交前必须执行 `mvn spotless:apply`，禁止手写格式差异
+- 提交前执行 `mvn spotless:check` 校验格式，不通过不得提交
+- 行尾统一 LF（.gitattributes + .editorconfig 已约束），禁止 CRLF
+- 禁止人工调整格式化器输出（如手动重排 import、对齐注释）

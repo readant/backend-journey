@@ -1,10 +1,9 @@
 package com.readant.cms.common;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import java.time.LocalDateTime;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 /**
  * MyBatis-Plus 自动填充处理器

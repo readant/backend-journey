@@ -1,5 +1,13 @@
 package com.readant.cms.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.readant.cms.common.BusinessException;
 import com.readant.cms.dto.ArticleCreateReq;
@@ -8,6 +16,7 @@ import com.readant.cms.entity.Article;
 import com.readant.cms.entity.Category;
 import com.readant.cms.mapper.ArticleMapper;
 import com.readant.cms.mapper.CategoryMapper;
+import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,16 +25,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @DisplayName("ArticleServiceImpl 单元测试")
 @ExtendWith(MockitoExtension.class)
@@ -128,8 +127,7 @@ class ArticleServiceImplTest {
             Article article = buildArticle(1L, "标题", 1, null);
             Page<Article> articlePage = new Page<>(1, 10, 1);
             articlePage.setRecords(Collections.singletonList(article));
-            when(articleMapper.selectPage(any(Page.class), any()))
-                    .thenReturn(articlePage);
+            when(articleMapper.selectPage(any(Page.class), any())).thenReturn(articlePage);
 
             Page<ArticleVO> result = articleService.page(1, 10, 1, null);
 
@@ -144,8 +142,7 @@ class ArticleServiceImplTest {
             Article article = buildArticle(1L, "标题", 1, 10L);
             Page<Article> articlePage = new Page<>(1, 10, 1);
             articlePage.setRecords(Collections.singletonList(article));
-            when(articleMapper.selectPage(any(Page.class), any()))
-                    .thenReturn(articlePage);
+            when(articleMapper.selectPage(any(Page.class), any())).thenReturn(articlePage);
             Category category = new Category();
             category.setId(10L);
             category.setName("公司新闻");

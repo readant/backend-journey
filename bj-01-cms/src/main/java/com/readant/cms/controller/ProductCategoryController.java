@@ -3,10 +3,9 @@ package com.readant.cms.controller;
 import com.readant.cms.common.R;
 import com.readant.cms.entity.ProductCategory;
 import com.readant.cms.service.ProductCategoryService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product-categories")

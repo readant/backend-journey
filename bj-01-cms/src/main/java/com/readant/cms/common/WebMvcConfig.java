@@ -22,7 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 将 /uploads/** 映射到本地文件系统的 uploads/ 目录
-        registry.addResourceHandler(urlPrefix + "/**")
-                .addResourceLocations("file:" + uploadPath + "/");
+        registry.addResourceHandler(urlPrefix + "/**").addResourceLocations("file:" + uploadPath + "/");
     }
 }

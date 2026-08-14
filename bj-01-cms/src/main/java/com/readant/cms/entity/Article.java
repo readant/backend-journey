@@ -1,9 +1,8 @@
 package com.readant.cms.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 文章实体

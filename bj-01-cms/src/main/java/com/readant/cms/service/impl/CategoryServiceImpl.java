@@ -4,14 +4,13 @@ import com.readant.cms.common.BusinessException;
 import com.readant.cms.entity.Category;
 import com.readant.cms.mapper.CategoryMapper;
 import com.readant.cms.service.CategoryService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * 栏目 Service 实现
@@ -31,9 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> all = categoryMapper.selectList(null);
 
         // 2. 按 parentId 分组
-        Map<Long, List<Category>> grouped = all.stream()
-                .collect(Collectors.groupingBy(
-                        c -> c.getParentId() == null ? 0L : c.getParentId()));
+        Map<Long, List<Category>> grouped =
+                all.stream().collect(Collectors.groupingBy(c -> c.getParentId() == null ? 0L : c.getParentId()));
 
         // 3. 为每个节点设置 children
         for (Category category : all) {
@@ -86,8 +84,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         // 检查是否有子栏目
         List<Category> children = categoryMapper.selectList(null);
-        boolean hasChildren = children.stream()
-                .anyMatch(c -> id.equals(c.getParentId()));
+        boolean hasChildren = children.stream().anyMatch(c -> id.equals(c.getParentId()));
         if (hasChildren) {
             throw new BusinessException(400, "该栏目下有子栏目，请先删除子栏目");
         }

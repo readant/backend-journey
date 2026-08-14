@@ -1,15 +1,15 @@
 package com.readant.cms.common;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @DisplayName("GlobalExceptionHandler 单元测试")
 class GlobalExceptionHandlerTest {
@@ -55,8 +55,7 @@ class GlobalExceptionHandlerTest {
             when(fieldError.getDefaultMessage()).thenReturn("标题不能为空");
             BindingResult bindingResult = mock(BindingResult.class);
             when(bindingResult.getFieldError()).thenReturn(fieldError);
-            MethodArgumentNotValidException e =
-                    new MethodArgumentNotValidException(null, bindingResult);
+            MethodArgumentNotValidException e = new MethodArgumentNotValidException(null, bindingResult);
 
             R<Void> result = handler.handleValidationException(e);
 
@@ -69,8 +68,7 @@ class GlobalExceptionHandlerTest {
         void shouldReturnDefaultMsg_whenNoFieldError() {
             BindingResult bindingResult = mock(BindingResult.class);
             when(bindingResult.getFieldError()).thenReturn(null);
-            MethodArgumentNotValidException e =
-                    new MethodArgumentNotValidException(null, bindingResult);
+            MethodArgumentNotValidException e = new MethodArgumentNotValidException(null, bindingResult);
 
             R<Void> result = handler.handleValidationException(e);
 
