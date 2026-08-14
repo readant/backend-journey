@@ -1,0 +1,36 @@
+---
+description: "Java 编码硬约束（命名/Lombok/日志/分层边界）"
+globs: ["**/*.java"]
+---
+
+# 1. 命名约定
+- 类/接口/枚举：UpperCamelCase（UserService）
+- 方法/变量：lowerCamelCase（getUserById）
+- 常量：UPPER_SNAKE_CASE（MAX_RETRY_COUNT）
+- 包名：全小写（com.readant.cms.service）
+
+# 2. Lombok 强制
+- Entity：@Data + @Builder
+- VO/DTO：@Data 或 @Value
+- Service/Controller 必须加 @Slf4j，禁止手动 new Logger
+- 禁止手写 getter/setter/toString/equals/hashCode/构造方法
+
+# 3. 日志规范
+- 占位符：log.info("用户 {} 登录成功", userId);
+- 禁止字符串拼接：不要 log.info("用户 " + userId + " 登录成功")
+- 异常必须带堆栈：log.error("业务异常", e);
+- 级别：ERROR(系统异常) / WARN(业务异常) / INFO(关键节点) / DEBUG(调试)
+
+# 4. 分层边界（越界即错）
+| 层 | 能注入/调用 | 禁止 |
+|----|------------|------|
+| Controller | Service | 注入 Mapper、写业务逻辑、加 @Transactional |
+| Service | Mapper + 其他 Service | 直接操作 HttpServletRequest/Response |
+| Mapper | 无 | 写业务逻辑 |
+- Entity 禁止出现在 Controller 入参/返参，必须转 DTO/VO
+- 跨 Service 调用允许，但避免循环依赖
+
+# 5. 异常规范
+- 业务异常抛 BusinessException（受业务控制，用户能理解的错误）
+- 系统异常直接抛 RuntimeException（意料之外，需要排查代码）
+- 禁止 catch(Exception e) {} 吞异常不处理

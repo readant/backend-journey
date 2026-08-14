@@ -28,43 +28,43 @@ bj-01-cms/
 
 ## 数据库表
 
-| 表名 | 说明 | Flyway 版本 |
-|-----|----|----|
-| admin | 管理员 | V1 |
-| role | 角色 | V2 |
-| admin_role | 管理员-角色关联 | V2 |
-| category | 栏目（树形） | V3 |
-| article | 文章 | V4 |
-| product_category | 产品分类（树形） | V5 |
-| product | 产品 | V5 |
-| operation_log | 操作日志 | V6 |
-| dict_data | 数据字典 | V7 |
+| 表名             | 说明             | Flyway 版本 |
+| ---------------- | ---------------- | ----------- |
+| admin            | 管理员           | V1          |
+| role             | 角色             | V2          |
+| admin_role       | 管理员-角色关联  | V2          |
+| category         | 栏目（树形）     | V3          |
+| article          | 文章             | V4          |
+| product_category | 产品分类（树形） | V5          |
+| product          | 产品             | V5          |
+| operation_log    | 操作日志         | V6          |
+| dict_data        | 数据字典         | V7          |
 
 ## API 清单
 
 ### 后台管理（需鉴权）
 
-| 方法 | 路径 | 说明 |
-|-----|----|----|
-| POST | `/api/v1/admins/login` | 登录 |
-| POST/GET/PUT/DELETE | `/api/v1/admins[/{id}]` | 管理员 CRUD |
-| GET/POST/DELETE | `/api/v1/roles[/...]` | 角色管理 |
-| GET/POST/PUT/DELETE | `/api/v1/categories[/{id}]` | 栏目管理 |
-| GET | `/api/v1/categories/tree` | 栏目树 |
-| POST/GET/PUT/DELETE | `/api/v1/articles[/{id}]` | 文章管理 |
-| POST | `/api/v1/files/upload` | 文件上传 |
-| GET/POST/PUT/DELETE | `/api/v1/product-categories[/{id}]` | 产品分类 |
-| GET/POST/PUT/DELETE | `/api/v1/products[/{id}]` | 产品管理 |
-| GET/POST/PUT/DELETE | `/api/v1/dict-data[/...]` | 数据字典 |
+| 方法                | 路径                                | 说明        |
+| ------------------- | ----------------------------------- | ----------- |
+| POST                | `/api/v1/admins/login`              | 登录        |
+| POST/GET/PUT/DELETE | `/api/v1/admins[/{id}]`             | 管理员 CRUD |
+| GET/POST/DELETE     | `/api/v1/roles[/...]`               | 角色管理    |
+| GET/POST/PUT/DELETE | `/api/v1/categories[/{id}]`         | 栏目管理    |
+| GET                 | `/api/v1/categories/tree`           | 栏目树      |
+| POST/GET/PUT/DELETE | `/api/v1/articles[/{id}]`           | 文章管理    |
+| POST                | `/api/v1/files/upload`              | 文件上传    |
+| GET/POST/PUT/DELETE | `/api/v1/product-categories[/{id}]` | 产品分类    |
+| GET/POST/PUT/DELETE | `/api/v1/products[/{id}]`           | 产品管理    |
+| GET/POST/PUT/DELETE | `/api/v1/dict-data[/...]`           | 数据字典    |
 
 ### 前台展示（无鉴权）
 
-| 方法 | 路径 | 说明 |
-|-----|----|----|
-| GET | `/api/v1/site/home` | 首页聚合 |
-| GET | `/api/v1/site/categories` | 栏目树 |
-| GET | `/api/v1/site/articles[/{id}]` | 文章列表/详情 |
-| GET | `/api/v1/site/products` | 产品列表 |
+| 方法 | 路径                           | 说明          |
+| ---- | ------------------------------ | ------------- |
+| GET  | `/api/v1/site/home`            | 首页聚合      |
+| GET  | `/api/v1/site/categories`      | 栏目树        |
+| GET  | `/api/v1/site/articles[/{id}]` | 文章列表/详情 |
+| GET  | `/api/v1/site/products`        | 产品列表      |
 
 ## 关键注解
 

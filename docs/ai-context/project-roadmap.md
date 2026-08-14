@@ -1,8 +1,3 @@
----
-description: "项目路线图：四个真实业务项目的功能模块、技术覆盖、开发顺序"
-alwaysApply: true
----
-
 # 项目路线图
 
 四个项目按业务类型递进，每个项目自包含，可独立参考。
@@ -45,19 +40,19 @@ Phase 4：完善与收尾（第 5 周）
 
 ### 技术覆盖清单
 
-| 技术点 | 对应功能 |
-|--------|----------|
-| Java 语法全覆盖 | Phase 1-2 |
-| Maven 依赖管理 | Phase 1 |
+| 技术点                       | 对应功能  |
+| ---------------------------- | --------- |
+| Java 语法全覆盖              | Phase 1-2 |
+| Maven 依赖管理               | Phase 1   |
 | Spring Boot 启动原理、IoC/DI | Phase 1-2 |
-| MyBatis-Plus CRUD、分页 | Phase 2-3 |
-| 条件构造器 | Phase 3 |
-| 参数校验 | Phase 2-3 |
-| 全局异常处理 | Phase 1 |
-| AOP（日志切面） | Phase 4 |
-| 文件上传 | Phase 3 |
-| SpringDoc OpenAPI | Phase 4 |
-| 树形结构设计 | Phase 3 |
+| MyBatis-Plus CRUD、分页      | Phase 2-3 |
+| 条件构造器                   | Phase 3   |
+| 参数校验                     | Phase 2-3 |
+| 全局异常处理                 | Phase 1   |
+| AOP（日志切面）              | Phase 4   |
+| 文件上传                     | Phase 3   |
+| SpringDoc OpenAPI            | Phase 4   |
+| 树形结构设计                 | Phase 3   |
 
 ### 简历描述参考
 
@@ -110,19 +105,19 @@ Phase 5：进阶能力（第 10 周，可选）
 
 ### 技术覆盖清单
 
-| 技术点 | 对应功能 |
-|--------|----------|
-| JWT 鉴权 | Phase 1 |
-| Spring Security | Phase 1 |
+| 技术点                             | 对应功能  |
+| ---------------------------------- | --------- |
+| JWT 鉴权                           | Phase 1   |
+| Spring Security                    | Phase 1   |
 | Redis 基础（String/Hash/List/Set） | Phase 2-3 |
-| Spring Data Redis | Phase 2-3 |
-| Elasticsearch | Phase 2 |
-| 事务管理（@Transactional） | Phase 3 |
-| 定时任务（@Scheduled） | Phase 3 |
-| 设计模式：策略模式（支付） | Phase 4 |
-| 设计模式：模板方法（订单流程） | Phase 3 |
-| 第三方集成（支付宝） | Phase 4 |
-| 消息队列初步 | Phase 5 |
+| Spring Data Redis                  | Phase 2-3 |
+| Elasticsearch                      | Phase 2   |
+| 事务管理（@Transactional）         | Phase 3   |
+| 定时任务（@Scheduled）             | Phase 3   |
+| 设计模式：策略模式（支付）         | Phase 4   |
+| 设计模式：模板方法（订单流程）     | Phase 3   |
+| 第三方集成（支付宝）               | Phase 4   |
+| 消息队列初步                       | Phase 5   |
 
 ### 简历描述参考
 
@@ -171,14 +166,14 @@ Phase 5：收尾（第 9 周）
 
 ### 技术覆盖清单
 
-| 技术点 | 对应功能 |
-|--------|----------|
-| Redis 社交数据结构 | Phase 1、3 |
-| 消息队列（RabbitMQ） | Phase 4 |
-| 事件机制（ApplicationEvent） | Phase 4 |
-| Feed 流架构设计 | Phase 4 |
-| DFA 敏感词算法 | Phase 4 |
-| 并发基础（线程池） | Phase 3-4 |
+| 技术点                       | 对应功能   |
+| ---------------------------- | ---------- |
+| Redis 社交数据结构           | Phase 1、3 |
+| 消息队列（RabbitMQ）         | Phase 4    |
+| 事件机制（ApplicationEvent） | Phase 4    |
+| Feed 流架构设计              | Phase 4    |
+| DFA 敏感词算法               | Phase 4    |
+| 并发基础（线程池）           | Phase 3-4  |
 
 ### 简历描述参考
 

@@ -18,24 +18,33 @@ backend-journey/
 ├── bj-01-cms/              # 项目一：企业官网+CMS（内容型业务）
 ├── bj-02-ecommerce/        # 项目二：电商系统（交易型业务）
 ├── bj-03-community/        # 项目三：社区/论坛（社交型业务）
-├── docs/cheatsheet/        # 跨项目速查卡片索引
-├── .cursor/rules/          # Cursor 规则文件
-│   ├── core.mdc            # 核心规则 + 自适应协议（alwaysApply）
-│   ├── knowledge-map.mdc   # 知识地图 + 进度追踪（alwaysApply）
-│   ├── roadmap.mdc         # 项目路线图（alwaysApply）
-│   ├── coding-standards.mdc # 编码规范（*.java 触发）
-│   ├── api-design.mdc      # API 设计规范（*Controller.java 触发）
-│   ├── testing.mdc         # 测试规范（*Test.java 触发）
-│   └── evolution.mdc       # 版本演进规范（*.sql 等触发）
+│
+├── .cursor/rules/          # 🟦 Cursor Rules（仅 5 个，AI 执行指令层）
+│   ├── core.mdc            #    唯一 alwaysApply：身份+进度指针+铁律+资源索引（~50行）
+│   ├── coding-java.mdc     #    **/*.java 触发：Java 编码硬约束
+│   ├── api-controller.mdc  #    **/*Controller.java 触发：接口规范
+│   ├── testing-java.mdc    #    **/*Test.java 触发：测试模板
+│   └── git-workflow.mdc    #    手动加载：Git 分支+提交格式
+│
+├── docs/                   # 📚 参考文档层（按读写权限分区，见下方关键入口）
+│   ├── ai-context/         #    🟠 AI 专属区：progress-tracker / knowledge-map / project-roadmap（人类只读，别手动改）
+│   ├── standards/          #    🔵 工程规范区：版本演进/Flyway/CHANGELOG
+│   ├── learning/           #    🟢 人类学习区：level1~level2 语法学习笔记
+│   ├── cheatsheet/         #    🟢 速查卡片区
+│   ├── coverage/           #    🟠 测试报告区（AI 生成）
+│   └── tools/              #    🟢 工具配置区
+│
 └── AGENTS.md               # 本文件
 ```
 
 ## 关键入口
 
-- Cursor 规则：`.cursor/rules/core.mdc` 是核心入口
-- 知识地图与进度追踪：`.cursor/rules/knowledge-map.mdc`
-- 项目路线图：`.cursor/rules/roadmap.mdc`
-- 速查卡片：`docs/cheatsheet/INDEX.md`
+- **Cursor 规则核心入口**（AI 的常驻工作记忆）：[.cursor/rules/core.mdc](.cursor/rules/core.mdc)（唯一 alwaysApply，其他规则 glob 自动触发）
+- **学习进度追踪**（AI 自动维护，人类只读）：[docs/ai-context/progress-tracker.md](docs/ai-context/progress-tracker.md)
+- **AI 参考资料库**（AI 按需读取）：[docs/ai-context/](docs/ai-context/)（知识地图 + 四项目路线图）
+- **工程规范**（人类定义，AI 遵守）：[docs/standards/version-evolution.md](docs/standards/version-evolution.md)（API 版本、Flyway、CHANGELOG、高风险变更确认机制）
+- **用户学习笔记**（人类主用）：[docs/learning/README.md](docs/learning/README.md)（语法学习路径）
+- **速查卡片**：[docs/cheatsheet/INDEX.md](docs/cheatsheet/INDEX.md)
 
 ## 设计决策
 
@@ -51,7 +60,7 @@ backend-journey/
 |---------|---------|------------|
 | bj-01-cms | [pj-01-cms-admin](https://github.com/readant/frontend-journey/tree/project/cms-frontend)（管理后台）、[pj-01-cms-portal](https://github.com/readant/frontend-journey/tree/project/cms-frontend)（前台门户） | [project/cms-frontend](https://github.com/readant/frontend-journey/tree/project/cms-frontend) |
 
-> 前端仓库本地路径等私有信息见 `.cursor/rules/local.mdc`（已加入 .gitignore，仅本地可见）
+> 前端仓库本地路径等私有信息见 `docs/standards/local-paths.md`（已加入 .gitignore，仅本地可见）
 
 ## 用户偏好与长期约束
 
@@ -60,4 +69,4 @@ backend-journey/
 - 中文注释和解释
 - Maven 构建，不用 Gradle
 - Java 17 上限
-- **Git 分支规范（GitHub Flow）**：禁止直接在 `main` 提交，`main` 永远保持可发布、干净；所有改动必须从 `main` 拉出 `feature/fix/docs` 分支，用 `--no-ff` 合回并删除分支。完整流程见 `.cursor/rules/git-commit.mdc`
+- **Git 分支规范（GitHub Flow）**：禁止直接在 `main` 提交，`main` 永远保持可发布、干净；所有改动必须从 `main` 拉出 `feature/fix/docs` 分支，用 `--no-ff` 合回并删除分支。完整流程见 `.cursor/rules/git-workflow.mdc`

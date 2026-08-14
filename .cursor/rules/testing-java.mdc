@@ -1,0 +1,60 @@
+---
+description: "测试分层 + 测试结构 + Mock 规范"
+globs: ["**/*Test.java", "**/*Service.java", "**/*Controller.java"]
+---
+
+# 1. 覆盖优先级
+✅ 必须覆盖：Service 层核心业务逻辑（分支/异常/边界）
+✅ 建议覆盖：工具类、公共组件
+⚠️  可选：简单 CRUD 的 Mapper
+❌ 不需要：Spring 配置类、Lombok 生成的方法
+
+# 2. 技术栈
+- JUnit 5（@Test、@Nested、@DisplayName）
+- Mockito（@Mock、@InjectMocks、when/verify）
+- AssertJ（assertThat 流式断言）
+
+# 3. 测试类结构（given-when-then）
+```java
+@DisplayName("UserService 单元测试")
+class UserServiceTest {
+
+    @InjectMocks
+    private UserServiceImpl userService;
+
+    @Mock
+    private UserMapper userMapper;
+
+    @Nested
+    @DisplayName("getUserById")
+    class GetUserById {
+
+        @Test
+        @DisplayName("存在的ID → 返回用户信息")
+        void shouldReturnUser_whenIdExists() {
+            // given
+            Long userId = 1L;
+            when(userMapper.selectById(userId)).thenReturn(new User().setId(userId));
+            // when
+            UserVO result = userService.getUserById(userId);
+            // then
+            assertThat(result).isNotNull();
+            verify(userMapper).selectById(userId);
+        }
+
+        @Test
+        @DisplayName("不存在的ID → 抛业务异常")
+        void shouldThrowException_whenIdNotFound() {
+            when(userMapper.selectById(999L)).thenReturn(null);
+            assertThatThrownBy(() -> userService.getUserById(999L))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("用户不存在");
+        }
+    }
+}
+```
+
+# 4. 命名规范
+- 测试类：{被测类名}Test（UserServiceTest）
+- 测试方法：should{预期行为}_when{条件}
+- @DisplayName 写中文描述
