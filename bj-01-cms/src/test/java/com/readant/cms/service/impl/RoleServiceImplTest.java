@@ -1,20 +1,5 @@
 package com.readant.cms.service.impl;
 
-import com.readant.cms.common.BusinessException;
-import com.readant.cms.entity.Role;
-import com.readant.cms.mapper.RoleMapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +9,20 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.readant.cms.common.BusinessException;
+import com.readant.cms.entity.Role;
+import com.readant.cms.mapper.RoleMapper;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 @DisplayName("RoleServiceImpl 单元测试")
 @ExtendWith(MockitoExtension.class)
@@ -100,9 +99,7 @@ class RoleServiceImplTest {
 
             roleService.assignRole(1L, 1L);
 
-            verify(jdbcTemplate).update(
-                    eq("INSERT INTO admin_role (admin_id, role_id) VALUES (?, ?)"),
-                    eq(1L), eq(1L));
+            verify(jdbcTemplate).update(eq("INSERT INTO admin_role (admin_id, role_id) VALUES (?, ?)"), eq(1L), eq(1L));
         }
     }
 
@@ -127,9 +124,8 @@ class RoleServiceImplTest {
 
             roleService.removeRole(1L, 1L);
 
-            verify(jdbcTemplate).update(
-                    eq("DELETE FROM admin_role WHERE admin_id = ? AND role_id = ?"),
-                    eq(1L), eq(1L));
+            verify(jdbcTemplate)
+                    .update(eq("DELETE FROM admin_role WHERE admin_id = ? AND role_id = ?"), eq(1L), eq(1L));
         }
     }
 
