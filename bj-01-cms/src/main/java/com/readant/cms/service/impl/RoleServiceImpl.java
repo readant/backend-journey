@@ -4,12 +4,11 @@ import com.readant.cms.common.BusinessException;
 import com.readant.cms.entity.Role;
 import com.readant.cms.mapper.RoleMapper;
 import com.readant.cms.service.RoleService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 角色 Service 实现
@@ -37,24 +36,20 @@ public class RoleServiceImpl implements RoleService {
 
         // 检查是否已分配（唯一索引会防止重复，但提前检查可以返回友好提示）
         Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM admin_role WHERE admin_id = ? AND role_id = ?",
-                Integer.class, adminId, roleId);
+                "SELECT COUNT(*) FROM admin_role WHERE admin_id = ? AND role_id = ?", Integer.class, adminId, roleId);
         if (count != null && count > 0) {
             throw new BusinessException(400, "该管理员已有此角色");
         }
 
         // 分配角色
-        jdbcTemplate.update(
-                "INSERT INTO admin_role (admin_id, role_id) VALUES (?, ?)",
-                adminId, roleId);
+        jdbcTemplate.update("INSERT INTO admin_role (admin_id, role_id) VALUES (?, ?)", adminId, roleId);
         log.info("分配角色: adminId={}, roleId={}", adminId, roleId);
     }
 
     @Override
     public void removeRole(Long adminId, Long roleId) {
-        int affected = jdbcTemplate.update(
-                "DELETE FROM admin_role WHERE admin_id = ? AND role_id = ?",
-                adminId, roleId);
+        int affected =
+                jdbcTemplate.update("DELETE FROM admin_role WHERE admin_id = ? AND role_id = ?", adminId, roleId);
         if (affected == 0) {
             throw new BusinessException(404, "该管理员没有此角色");
         }

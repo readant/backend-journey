@@ -3,10 +3,9 @@ package com.readant.cms.controller;
 import com.readant.cms.common.R;
 import com.readant.cms.entity.DictData;
 import com.readant.cms.service.DictDataService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/dict-data")

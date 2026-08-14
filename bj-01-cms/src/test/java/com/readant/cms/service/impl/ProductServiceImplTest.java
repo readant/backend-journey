@@ -1,10 +1,19 @@
 package com.readant.cms.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.readant.cms.common.BusinessException;
 import com.readant.cms.entity.Product;
 import com.readant.cms.mapper.ProductMapper;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,16 +22,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @DisplayName("ProductServiceImpl 单元测试")
 @ExtendWith(MockitoExtension.class)
@@ -108,8 +107,7 @@ class ProductServiceImplTest {
         void shouldReturnPage() {
             Page<Product> productPage = new Page<>(1, 10, 1);
             productPage.setRecords(java.util.List.of(buildProduct(1L, "产品", 1L)));
-            when(productMapper.selectPage(any(Page.class), any(Wrapper.class)))
-                    .thenReturn(productPage);
+            when(productMapper.selectPage(any(Page.class), any(Wrapper.class))).thenReturn(productPage);
 
             Page<Product> result = productService.page(1, 10, 1L);
 
@@ -122,8 +120,7 @@ class ProductServiceImplTest {
         @DisplayName("无栏目ID → 查询所有产品")
         void shouldQueryAll_whenNoCategory() {
             Page<Product> productPage = new Page<>(1, 10, 0);
-            when(productMapper.selectPage(any(Page.class), any(Wrapper.class)))
-                    .thenReturn(productPage);
+            when(productMapper.selectPage(any(Page.class), any(Wrapper.class))).thenReturn(productPage);
 
             Page<Product> result = productService.page(1, 10, null);
 

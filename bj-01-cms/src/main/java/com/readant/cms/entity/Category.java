@@ -1,10 +1,9 @@
 package com.readant.cms.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
 
 /**
  * 栏目实体 —— 支持多级树形结构

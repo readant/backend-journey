@@ -6,5 +6,4 @@ import com.readant.cms.entity.Role;
 /**
  * 角色 Mapper
  */
-public interface RoleMapper extends BaseMapper<Role> {
-}
+public interface RoleMapper extends BaseMapper<Role> {}

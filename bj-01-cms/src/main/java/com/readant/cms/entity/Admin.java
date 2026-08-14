@@ -1,9 +1,8 @@
 package com.readant.cms.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 管理员实体 —— 对应数据库 admin 表

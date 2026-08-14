@@ -6,5 +6,4 @@ import com.readant.cms.entity.Category;
 /**
  * 栏目 Mapper
  */
-public interface CategoryMapper extends BaseMapper<Category> {
-}
+public interface CategoryMapper extends BaseMapper<Category> {}
