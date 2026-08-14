@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
      * 处理业务异常（我们主动抛出的、可预料的错误）
      */
     @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.OK)  // HTTP 状态码还是 200，具体错误通过 R.code 区分
+    @ResponseStatus(HttpStatus.OK) // HTTP 状态码还是 200，具体错误通过 R.code 区分
     public R<Void> handleBusinessException(BusinessException e) {
         log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMessage());
         return R.error(e.getCode(), e.getMessage());

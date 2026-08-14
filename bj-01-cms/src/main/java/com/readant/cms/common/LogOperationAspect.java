@@ -25,7 +25,8 @@ public class LogOperationAspect {
         Object result = joinPoint.proceed();
 
         try {
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes attributes =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = attributes != null ? attributes.getRequest() : null;
 
             Long targetId = null;

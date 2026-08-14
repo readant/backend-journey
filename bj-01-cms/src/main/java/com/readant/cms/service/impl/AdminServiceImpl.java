@@ -6,14 +6,13 @@ import com.readant.cms.dto.*;
 import com.readant.cms.entity.Admin;
 import com.readant.cms.mapper.AdminMapper;
 import com.readant.cms.service.AdminService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 管理员 Service 实现
@@ -97,10 +96,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AdminVO> listAll() {
-        return adminMapper.selectList(null)
-                .stream()
-                .map(this::toVO)
-                .collect(Collectors.toList());
+        return adminMapper.selectList(null).stream().map(this::toVO).collect(Collectors.toList());
     }
 
     @Override

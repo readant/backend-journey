@@ -1,7 +1,6 @@
 package com.readant.cms.service;
 
 import com.readant.cms.entity.DictData;
-
 import java.util.List;
 
 public interface DictDataService {

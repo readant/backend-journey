@@ -11,5 +11,6 @@ import java.lang.annotation.*;
 public @interface LogOperation {
 
     String module();
+
     String action();
 }

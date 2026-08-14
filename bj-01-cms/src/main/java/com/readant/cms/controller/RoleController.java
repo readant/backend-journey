@@ -3,10 +3,9 @@ package com.readant.cms.controller;
 import com.readant.cms.common.R;
 import com.readant.cms.entity.Role;
 import com.readant.cms.service.RoleService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 角色管理接口

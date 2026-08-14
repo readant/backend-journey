@@ -4,14 +4,13 @@ import com.readant.cms.common.BusinessException;
 import com.readant.cms.entity.ProductCategory;
 import com.readant.cms.mapper.ProductCategoryMapper;
 import com.readant.cms.service.ProductCategoryService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -24,9 +23,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public List<ProductCategory> getTree() {
         List<ProductCategory> all = productCategoryMapper.selectList(null);
 
-        Map<Long, List<ProductCategory>> grouped = all.stream()
-                .collect(Collectors.groupingBy(
-                        c -> c.getParentId() == null ? 0L : c.getParentId()));
+        Map<Long, List<ProductCategory>> grouped =
+                all.stream().collect(Collectors.groupingBy(c -> c.getParentId() == null ? 0L : c.getParentId()));
 
         for (ProductCategory category : all) {
             List<ProductCategory> children = grouped.get(category.getId());

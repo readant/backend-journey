@@ -5,10 +5,9 @@ import com.readant.cms.common.R;
 import com.readant.cms.dto.*;
 import com.readant.cms.service.AdminService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admins")

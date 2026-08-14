@@ -10,12 +10,11 @@ import com.readant.cms.entity.Category;
 import com.readant.cms.mapper.ArticleMapper;
 import com.readant.cms.mapper.CategoryMapper;
 import com.readant.cms.service.ArticleService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 /**
  * 文章 Service 实现
@@ -61,14 +60,11 @@ public class ArticleServiceImpl implements ArticleService {
                 .orderByDesc(Article::getCreatedAt);
 
         // 分页查询
-        Page<Article> articlePage = articleMapper.selectPage(
-                new Page<>(pageNum, pageSize), wrapper);
+        Page<Article> articlePage = articleMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
 
         // 转换为 VO
         Page<ArticleVO> voPage = new Page<>(articlePage.getCurrent(), articlePage.getSize(), articlePage.getTotal());
-        voPage.setRecords(articlePage.getRecords().stream()
-                .map(this::toVO)
-                .collect(Collectors.toList()));
+        voPage.setRecords(articlePage.getRecords().stream().map(this::toVO).collect(Collectors.toList()));
 
         return voPage;
     }
