@@ -1,0 +1,31 @@
+---
+description: "RESTful API 硬约束 + R返回体 + 参数校验 + 分页"
+globs: ["**/*Controller.java"]
+---
+
+# 1. 路径与方法语义
+- 名词复数表示资源：/api/v1/articles、/api/v1/categories
+- 严格对应语义：
+  GET 列表 → /api/v1/articles
+  GET 单个 → /api/v1/articles/{id}
+  POST 新增 → /api/v1/articles
+  PUT 全量更新 → /api/v1/articles/{id}
+  PATCH 部分更新 → /api/v1/articles/{id}
+  DELETE 删除 → /api/v1/articles/{id}
+
+# 2. 统一返回格式
+所有方法返回 R：
+- R.success(data) → code=200, msg="success"
+- R.error("错误信息") → code=500
+- R.error(400, "参数错误") → 自定义错误码
+禁止直接返回 Entity/Map/裸字符串
+
+# 3. 参数校验（jakarta.validation）
+- 入参 DTO 字段加注解：@NotBlank/@NotNull/@Size/@Pattern 等，message 写中文
+- Controller 方法参数加 @Valid 或 @Validated
+- 全局异常处理器已捕获 MethodArgumentNotValidException，无需 try-catch
+
+# 4. 分页约定
+请求入参：pageNum（从1开始）、pageSize（默认10，最大100）
+返参 data 结构：{ records: [...], total: N, pageNum: 1, pageSize: 10 }
+使用 MyBatis-Plus Page 对象
