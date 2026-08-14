@@ -22,4 +22,5 @@ docs/tools/
 | 工具   | 主题                                            | 说明                                                        |
 | ------ | ----------------------------------------------- | ----------------------------------------------------------- |
 | Cursor | [Java 插件检查与安装](./cursor/java-plugins.md) | Java 开发所需扩展清单、缺失判断、安装方法（含镜像安装踩坑） |
+| Cursor | [PowerShell 不兼容排查](./cursor/powershell-compat.md) | Windows 下 PS 5.1 乱码/语法/别名问题根因与解法：默认终端统一为 PowerShell 7（Git Bash 已移除），UTF-8 与执行策略必须项；含 8 条命令生成强制规则、PS7 安装实战记录（MSIX/MSI 坑） |
 | Maven  | [Spotless 代码格式化](./maven/spotless-java-format.md) | Java 格式唯一权威：palantir 风格、.editorconfig 配套、与 IDE 保存格式化的关系 |

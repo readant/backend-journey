@@ -95,7 +95,7 @@ cursor --install-extension "<本地路径>.vsix" --force
 | redhat.java                          | 1.55.0         |
 | vscjava.vscode-java-debug            | 0.59.0         |
 | vscjava.vscode-java-dependency       | 0.27.6         |
-| vscjava.vscode-java-test             | 0.46.0         |
+| vscjava.vscode-java-test             | **0.46.0**（当前激活版本，带 ASM bundle 冲突风险，见第 6 节） |
 | vscjava.vscode-maven                 | 0.45.3         |
 | vmware.vscode-spring-boot            | 2.4.2026081300 |
 | vscjava.vscode-spring-boot-dashboard | 0.14.0         |
@@ -106,3 +106,35 @@ cursor --install-extension "<本地路径>.vsix" --force
 - 侧边栏新增 **Maven** 视图：`clean`/`test`/`package`/`install` 一键执行
 - 侧边栏新增 **Spring Boot** 视图：应用一键启动/停止/调试
 - `application.yml` 输入 `spring.` 等前缀有配置项补全提示
+
+## 6. Run/Debug 按钮无反应排查（vscode-java-test 0.46.0 ASM bundle 冲突，2026-08 已定位）
+
+### 症状
+
+点编辑器上方 **Run Java / Debug** 按钮无任何输出（无报错弹窗），但 `mvn spring-boot:run` 命令行正常。
+
+### 排查结论（与终端无关）
+
+- **不是 Git Bash 默认终端的锅**：Run/Debug 走 LSP 通道（`vscode.java.startDebugSession`），默认 console 是调试控制台，不经过任何 shell。Git Bash 只影响手动敲命令。
+- **按钮实际生效过**：日志中能看到 `launch debug info` → 12 秒后 `abnormal response`，即调试会话创建后语言服务器侧静默失败。
+
+### 根因
+
+`vscjava.vscode-java-test 0.46.0` 的 `package.json` 把 `org.objectweb.asm*_9.10.1.jar` 三件套声明为语言服务器扩展 bundle（jacoco 的依赖），而 `redhat.java 1.55.0` 自己已带同名同版本 ASM。JDT LS 初始化 `loadBundles` 时重复安装 → OSGi 拒绝：
+
+```
+Failed to load extension bundles
+BundleException: A bundle is already installed with the name "org.objectweb.asm" and version "9.10.1"
+```
+
+后果：扩展 bundle 加载失败、项目模型残缺（ss_ws bin 只有 CmsApplication + 测试类）→ 调试器拿不到主类/classpath → Run 静默失败。`ss_ws`（Syntax-only）不执行 `loadBundles` 所以不触发，只有 Standard 模式（`jdt_ws` 存在）会中招。
+
+### 当前状态与备用方案（2026-08）
+
+**当前使用 0.46.0**（`extensions.json` 注册激活），若 Run/Debug 正常则无需处理。若日后按钮失效，按下述备用方案处理：
+
+1. **降级 vscode-java-test 到 0.45.0**（0.45.0 不声明 ASM bundle，已验证 server 目录无 asm jar）。本地 vsix 安装方式见第 4 节，装完 `cursor --install-extension <本地.vsix> --force`。
+2. **删除语言服务器缓存工作区**：`...\workspaceStorage\<hash>\redhat.java`（含 `ss_ws` 与 `jdt_ws`），重启 Cursor 后自动重建（约 30 秒）。
+3. 验证：新开窗口后 `jdt_ws\.metadata\.log` 无 `Failed to load extension bundles`；Run 按钮可正常启动。
+
+> ⚠️ 若 0.46.0 目录因 Cursor 运行中无法删除（`Device or resource busy`），保留即可——`extensions.json` 改指向 0.45.0 后，重启不会加载旧目录。
