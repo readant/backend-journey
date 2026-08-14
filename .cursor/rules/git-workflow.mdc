@@ -1,0 +1,50 @@
+---
+description: "GitHub Flow 分支策略 + 提交格式（用户说'提交代码'时才加载）"
+---
+
+# 零. 分支策略（最高优先级）
+禁止直接在 main 上提交。main 永远可发布，任何改动必须走分支合回。
+
+## 强制流程
+```bash
+# 1. main 拉最新
+git checkout main && git pull
+# 2. 拉功能分支（前缀必须带类型）
+git checkout -b feature/xxx     # 新功能
+git checkout -b fix/xxx         # 修复
+git checkout -b docs/xxx        # 文档
+git checkout -b refactor/xxx    # 重构
+# 3. 分支上按规范拆分提交
+# 4. 合回 main（--no-ff 保留历史）
+git checkout main
+git merge --no-ff feature/xxx -m "Merge branch 'feature/xxx' into main"
+# 5. 推送 + 清理分支
+git push origin main
+git branch -d feature/xxx
+```
+
+## 禁止行为
+- ❌ 直接在 main 上 commit
+- ❌ git add . 一次性提交所有
+- ❌ 功能分支长期不合并
+- ❌ 在前端仓库（frontend-journey）执行 git 命令，必须指到本仓库
+
+# 一. 提交格式
+<type>(<scope>): <中文描述>
+
+## type（必填）
+feat 新功能 / fix 修复 / chore 基础设置 / docs 文档 / refactor 重构 / test 测试
+
+## scope（可选）
+phase1~phase4（开发阶段）/ cms / ecommerce / community / saas（项目）/ infrastructure（基础设施）
+
+## description（必填）
+简体中文，简洁不超过 50 字；一个提交只包含一个逻辑变更
+
+## 示例
+```
+feat(phase2): 管理员 CRUD
+fix: 修复登录接口空指针异常
+refactor(cms): 提取公共树形查询方法
+test: 添加 AdminService 登录分支单元测试
+```
