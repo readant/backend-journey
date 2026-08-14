@@ -59,11 +59,17 @@ backend-journey/
 ├── bj-02-ecommerce/        # 项目二：电商系统（待创建）
 ├── bj-03-community/        # 项目三：社区/论坛（待创建）
 ├── bj-04-saas/             # 项目四：SaaS 工作台（待创建）
-├── docs/cheatsheet/        # 跨项目速查卡片
+├── docs/ai-context/        # AI 专属区：进度追踪/知识地图/项目路线图
+├── docs/standards/         # 工程规范：版本演进/Flyway/CHANGELOG
 ├── docs/learning/          # Java 语法学习导航（零基础 → 能看代码）
-├── .cursor/rules/          # Cursor AI 规则（8条）
+├── docs/cheatsheet/        # 跨项目速查卡片
+├── docs/coverage/          # 测试报告（AI 生成）
+├── docs/tools/             # 工具配置
+├── .cursor/rules/          # Cursor AI 规则（5 条，核心入口 core.mdc）
+├── .gitattributes          # 统一仓库行尾为 LF
 ├── .gitignore
 ├── AGENTS.md               # Cursor 代理说明
+├── CHANGELOG.md            # 版本变更记录
 └── README.md               # 本文件
 ```
 
@@ -146,7 +152,7 @@ docs: 更新项目 README 和速查卡片
 ## 学习进度
 
 - **零基础入门**：先走 [Java 语法学习导航](docs/learning/README.md)（语法层），再看实战代码
-- **进度追踪**：详见 [知识地图](.cursor/rules/knowledge-map.mdc) 和 [速查卡片](docs/cheatsheet/INDEX.md)
+- **进度追踪**：详见 [知识地图](docs/ai-context/knowledge-map.md) 和 [速查卡片](docs/cheatsheet/INDEX.md)
 
 ---
 
@@ -154,6 +160,6 @@ docs: 更新项目 README 和速查卡片
 
 学无止境，一起努力。如果觉得有帮助，点个 Star 鼓励一下吧 :)
 
-_Last updated: 2026-08-12_
+_Last updated: 2026-08-14_
 
 </div>
