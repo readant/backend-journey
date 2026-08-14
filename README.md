@@ -63,6 +63,7 @@ backend-journey/
 ├── docs/standards/         # 工程规范：版本演进/Flyway/CHANGELOG
 ├── docs/learning/          # Java 语法学习导航（零基础 → 能看代码）
 ├── docs/cheatsheet/        # 跨项目速查卡片
+├── docs/testing/           # 测试经验沉淀（原则→工具→实战→排查→协作，5 组 10 篇）
 ├── docs/coverage/          # 测试报告（AI 生成）
 ├── docs/tools/             # 工具配置
 ├── .cursor/rules/          # Cursor AI 规则（5 条，核心入口 core.mdc）
