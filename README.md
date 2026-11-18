@@ -2,7 +2,7 @@
 
 # Backend Journey
 
-### 从零开始的 Java 后端学习之旅
+### Java 后端个人技术作品集
 
 ![Java 17](https://img.shields.io/badge/Java-17-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
@@ -15,9 +15,9 @@
 
 ---
 
-通过一系列真实业务项目，系统掌握 Java 后端开发。
+四个真实业务项目，一套面向公开审查的 Java 后端作品集。
 
-从零开始，一步步搭建企业级应用。
+工程标准见 [.cursor/rules/core.mdc](.cursor/rules/core.mdc)：安全基线、交付门禁、文档举证不因"学习项目"豁免；学习导航作为附加价值保留。
 
 > 🎯 **前后端配套学习**：每个后端项目都有对应的 Vue 3 前端实现（一个后端可能对应「管理后台 + 前台门户」多个应用），前后端联动，完整还原真实项目开发流程。前端仓库见文末「[配套前端项目](#配套前端项目)」。
 
@@ -66,7 +66,7 @@ backend-journey/
 ├── docs/testing/           # 测试经验沉淀（原则→工具→实战→排查→协作，5 组 10 篇）
 ├── docs/coverage/          # 测试报告（AI 生成）
 ├── docs/tools/             # 工具配置
-├── .cursor/rules/          # Cursor AI 规则（5 条，核心入口 core.mdc）
+├── .cursor/rules/          # Cursor AI 规则（7 条，核心入口 core.mdc）
 ├── .gitattributes          # 统一仓库行尾为 LF
 ├── .gitignore
 ├── AGENTS.md               # Cursor 代理说明
@@ -79,10 +79,13 @@ backend-journey/
 ## 设计原则
 
 1. **多项目自包含** — 每个项目独立 Spring Boot 工程，不共享代码模块，可单独参考和部署
-2. **业务驱动学习** — 按业务类型（内容型 → 交易型 → 社交型）递进，不是技术点堆砌
-3. **分层架构** — controller → service → mapper，各层职责分明
-4. **测试同步** — 核心 Service 必须配套 JUnit 5 单元测试
-5. **统一返回** — 所有接口返回 `R` 对象（code + msg + data）
+2. **专业作品标准** — 面向公开审查，铁律/安全基线/交付门禁不因"学习项目"豁免
+3. **通用用库，业务手写** — 鉴权/工具/Excel 用成熟库，业务建模与核心流程自己写
+4. **业务驱动** — 按业务类型（内容型 → 交易型 → 社交型）递进，不是技术点堆砌
+5. **分层架构** — controller → service → mapper，各层职责分明
+6. **测试同步** — 核心 Service 与公共组件必须配套单测，变更端点必须冒烟
+7. **统一返回** — 所有接口返回 `R` 对象（code + msg + data），API 边界不出现 Entity/Map
+8. **文档举证** — 文档中的每个 ✅ 必须有代码、测试或运行结果佐证
 
 ---
 
@@ -101,6 +104,17 @@ backend-journey/
 
 ---
 
+## 仓库地址
+
+本仓库同时托管在 GitHub 与 Gitee，内容保持同步：
+
+- **GitHub**（主仓库）：https://github.com/readant/backend-journey
+- **Gitee**（镜像）：https://gitee.com/readant/backend-journey
+
+> 国内访问 Gitee 速度更快。两个仓库由同一份 Git 历史推送，不存在内容差异。
+
+---
+
 ## 快速开始
 
 ```bash
@@ -108,15 +122,21 @@ backend-journey/
 git clone https://github.com/readant/backend-journey.git
 cd backend-journey/bj-01-cms
 
-# 编译
-mvn compile
+# 设置数据库口令（凭据不入库，见 .cursor/rules/security.mdc）
+export DB_PASSWORD=你的本地MySQL密码        # Windows PowerShell: $env:DB_PASSWORD="你的密码"
 
-# 启动（需要本地 MySQL，配置见 application.yml）
+# 编译与测试
+mvn compile
+mvn test
+
+# 启动（需要本地 MySQL，默认不使用 dev profile）
 mvn spring-boot:run
 
-# 访问 API 文档
-open http://localhost:8080/swagger-ui.html
+# 访问 API 文档（SpringDoc 2.x）
+open http://localhost:8080/swagger-ui/index.html
 ```
+
+> 管理接口需要请求头 `Authorization: Bearer <登录返回的token>`。登录接口与 `/api/v1/site/**` 前台接口无需鉴权。
 
 ---
 

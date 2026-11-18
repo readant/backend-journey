@@ -1,5 +1,5 @@
 ---
-description: "Java 编码硬约束（命名/Lombok/日志/分层边界）"
+description: "Java 编码硬约束（命名/Lombok/日志/分层边界/事务并发/查询性能）"
 globs: ["**/*.java"]
 ---
 
@@ -34,8 +34,26 @@ globs: ["**/*.java"]
 - 业务异常抛 BusinessException（受业务控制，用户能理解的错误）
 - 系统异常直接抛 RuntimeException（意料之外，需要排查代码）
 - 禁止 catch(Exception e) {} 吞异常不处理
+- 异常 message 不得包含密码/token/密钥；对外只给业务语言，堆栈只进日志
 
-# 6. 格式规范
+# 6. 事务与并发（越界即错）
+- 所有写操作 Service 方法加 `@Transactional`（含单表新增/修改/删除，保持一致）
+- "先查后写"必须在同一事务内；涉及唯一性判断时用数据库唯一索引兜底，不能只靠应用层查重
+- 批量操作限制影响行数；删除父级数据前检查子级引用
+- 事务方法内禁止远程调用、文件 IO、循环内逐条写库（长事务）
+
+# 7. 查询性能
+- 禁止 N+1：列表查询要一次性批量取关联数据（IN 查询 / JOIN / 字典 Map），不要在循环里查库
+- 分页查询必须走 MyBatis-Plus Page，禁止先 `selectList` 再内存分页
+- 只查需要的字段，禁止 `select *` 语义的全字段返回
+- 树形结构组装在内存一次完成，不要递归查库
+
+# 8. 对象拷贝与状态字段
+- `BeanUtils.copyProperties` 会把 null 一并覆盖：更新接口必须先判断再拷贝，或用显式 setter / MapStruct
+- 更新操作返回的 VO 必须反映**落库后的真实状态**，不能返回内存里被 null 覆盖过的中间对象
+- DTO → Entity → VO 的字段映射要有对应测试，尤其是状态字段与默认值
+
+# 9. 格式规范
 - 唯一权威：Spotless + palantir-java-format（已配置于 bj-01-cms/pom.xml）
 - 提交前必须执行 `mvn spotless:apply`，禁止手写格式差异
 - 提交前执行 `mvn spotless:check` 校验格式，不通过不得提交

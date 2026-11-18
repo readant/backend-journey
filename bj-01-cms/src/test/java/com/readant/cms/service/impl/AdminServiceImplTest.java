@@ -142,7 +142,8 @@ class AdminServiceImplTest {
             Admin saved = captor.getValue();
             // 入库密码是 BCrypt 哈希，非明文
             assertThat(saved.getPassword()).isNotEqualTo("<YOUR_DB_PASSWORD>");
-            assertThat(encoder.matches("<YOUR_DB_PASSWORD>", saved.getPassword())).isTrue();
+            assertThat(encoder.matches("<YOUR_DB_PASSWORD>", saved.getPassword()))
+                    .isTrue();
             assertThat(saved.getStatus()).isEqualTo(1);
         }
 

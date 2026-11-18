@@ -1,9 +1,33 @@
 ---
-description: "GitHub Flow 分支策略 + 提交格式（用户说'提交代码'时才加载）"
+description: "GitHub Flow 分支策略 + 双仓库推送 + 提交格式（用户说'提交代码'时才加载）"
 ---
 
 # 零. 分支策略（最高优先级）
 禁止直接在 main 上提交。main 永远可发布，任何改动必须走分支合回。
+
+# 零.5 双仓库推送（强制机制，不可豁免）
+
+origin 配置了**两个 push URL**，一次 `git push origin` 自动推送到两端：
+
+| 用途 | 地址 |
+|------|------|
+| fetch（唯一） | https://github.com/readant/backend-journey.git |
+| push ① | https://github.com/readant/backend-journey.git |
+| push ② | https://gitee.com/readant/backend-journey.git |
+
+**强制约定**：
+- 只写 `git push origin <branch>`，禁止手动分别推 GitHub/Gitee
+- 推送后检查两端 HEAD 一致：`git ls-remote origin refs/heads/main` 与 `git rev-parse main` 比对
+- 远端历史重写（`--force-with-lease`）会同时作用于两端，属极高风险操作，必须单独授权
+- 若 Gitee 推送失败（网络/限流），不得当作"完成"，须如实报告并重试
+
+**配置依据**：`git config --get-all remote.origin.pushurl` 应返回两行。
+若某天 push URL 丢失（如 filter-repo 会移除 remote），按此顺序重建：
+```bash
+git config --unset-all remote.origin.pushurl
+git remote set-url --add --push origin https://github.com/readant/backend-journey.git
+git remote set-url --add --push origin https://gitee.com/readant/backend-journey.git
+```
 
 ## 强制流程
 ```bash
@@ -24,6 +48,7 @@ git branch -d feature/xxx
 ```
 
 ## 禁止行为
+- ❌ 只推一个远端仓库（必须走 origin 双 push URL，一次推两端）
 - ❌ 直接在 main 上 commit
 - ❌ git add . 一次性提交所有
 - ❌ 功能分支长期不合并

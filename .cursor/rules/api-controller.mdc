@@ -1,5 +1,5 @@
 ---
-description: "RESTful API 硬约束 + R返回体 + 参数校验 + 分页"
+description: "RESTful API 硬约束 + R返回体 + 参数校验 + 分页 + 鉴权约定"
 globs: ["**/*Controller.java"]
 ---
 
@@ -18,14 +18,24 @@ globs: ["**/*Controller.java"]
 - R.success(data) → code=200, msg="success"
 - R.error("错误信息") → code=500
 - R.error(400, "参数错误") → 自定义错误码
-禁止直接返回 Entity/Map/裸字符串
+- 禁止直接返回 Entity/Map/裸字符串，也禁止 `R<Map>`、`R<?>` 这类无契约返回
+- 每个接口必须有明确的 VO 类型（含分页 VO），让调用方能从类型看出返回结构
+- 删除操作返回 `R<Void>`，不返回被删对象
 
 # 3. 参数校验（jakarta.validation）
 - 入参 DTO 字段加注解：@NotBlank/@NotNull/@Size/@Pattern 等，message 写中文
-- Controller 方法参数加 @Valid 或 @Validated
+- Controller 方法参数加 @Valid 或 @Validated；**每一个**请求体都要加，不允许选择性豁免
+- 路径变量与请求参数也要校验：@Positive（id）、@Min/@Max（分页）、@Pattern（枚举字符串）
 - 全局异常处理器已捕获 MethodArgumentNotValidException，无需 try-catch
 
 # 4. 分页约定
 请求入参：pageNum（从1开始）、pageSize（默认10，最大100）
+- pageSize 必须有 `@Max(100)` 注解校验，仅写 defaultValue 不算约束
 返参 data 结构：{ records: [...], total: N, pageNum: 1, pageSize: 10 }
-使用 MyBatis-Plus Page 对象
+使用 MyBatis-Plus Page 对象，返回具体 PageVO 而非 Map
+
+# 5. 鉴权与可见性约定
+- 管理接口默认需要鉴权；白名单集中在拦截器配置一处声明
+- 请求头统一 `Authorization: Bearer <token>`；token 内容由服务端解析，禁止从请求参数接收 adminId
+- 前台只读接口（/api/v1/site/**）必须服务端过滤状态（草稿/未发布不可见），列表与详情都要过滤
+- 每个新增接口的鉴权要求要写进该 Controller 的类注释（"需鉴权"/"公开"）
