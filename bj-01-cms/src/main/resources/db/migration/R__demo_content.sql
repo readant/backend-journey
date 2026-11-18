@@ -61,14 +61,14 @@ WHERE EXISTS (SELECT 1 FROM category WHERE name = '学习笔记')
 -- 小组介绍
 INSERT INTO article (title, summary, content, category_id, cover_image, status, author, view_count, created_at)
 SELECT
-  '兴华学习小组：一群人，把代码这件事学好',
-  '我们是谁、我们在做什么、我们为什么聚在一起——来自兴华学习小组的自我介绍。',
-  '<p>兴华学习小组成立于 2025 年春天，是一群热爱编程、愿意持续投入的学习者组成的互助社区。我们不追求速成，不迷信捷径，只相信一件事：扎实的基础 + 持续的输出 = 真正的成长。</p><h2>我们在做什么</h2><ul><li>每周固定一次技术分享会，主题覆盖前端、后端、算法与工程实践</li><li>以真实业务项目为主线，从需求分析到上线发布走完整流程</li><li>结对编程与 Code Review 常态化，让每一行代码都被认真对待</li></ul><h2>我们为什么聚在一起</h2><p>独自学习容易陷入三个困境：方向不清晰、问题没人讨论、成果无人反馈。小组存在的意义，就是互相补位——有人擅长架构，有人擅长调试，有人擅长表达。我们把各自擅长的事分享出来，所有人的短板就都被补齐了。</p><blockquote>一个人可以走得很快，但一群人才能走得更远。</blockquote><p>如果你也在学习编程的路上，欢迎关注我们，或者来现场旁听一次分享会。</p>',
+  '雄心工作室：把想法做成作品',
+  '我们是谁、我们在做什么、我们为什么聚在一起——来自雄心工作室的自我介绍。',
+  '<p>雄心工作室由一群愿意把想法落地的人组成。我们不追求速成，不迷信捷径，只相信一件事：扎实的基础 + 持续的输出 = 真正的成长。</p><h2>我们在做什么</h2><ul><li>每周固定一次技术分享会，主题覆盖前端、后端、算法与工程实践</li><li>以真实业务项目为主线，从需求分析到上线发布走完整流程</li><li>结对编程与 Code Review 常态化，让每一行代码都被认真对待</li></ul><h2>我们为什么聚在一起</h2><p>独自学习容易陷入三个困境：方向不清晰、问题没人讨论、成果无人反馈。小组存在的意义，就是互相补位——有人擅长架构，有人擅长调试，有人擅长表达。我们把各自擅长的事分享出来，所有人的短板就都被补齐了。</p><blockquote>一个人可以走得很快，但一群人才能走得更远。</blockquote><p>如果你也在学习编程的路上，欢迎关注我们，或者来现场旁听一次分享会。</p>',
   (SELECT id FROM category WHERE name = '小组介绍'),
   'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=60',
-  1, '兴华小组', 286, '2026-03-01 09:00:00'
+  1, '雄心工作室', 286, '2026-03-01 09:00:00'
 WHERE EXISTS (SELECT 1 FROM category WHERE name = '小组介绍')
-  AND NOT EXISTS (SELECT 1 FROM article WHERE title = '兴华学习小组：一群人，把代码这件事学好');
+  AND NOT EXISTS (SELECT 1 FROM article WHERE title = '雄心工作室：把想法做成作品');
 
 -- 学习笔记
 INSERT INTO article (title, summary, content, category_id, cover_image, status, author, view_count, created_at)
@@ -123,7 +123,7 @@ SELECT
   '<p>本周分享会的主题是 Code Review。我们以小组最近完成的订单模块为例，现场过了一遍完整评审流程，全程录制并整理了问题清单。</p><h2>评审中发现的典型问题</h2><ul><li>状态字段用魔法数字硬编码，缺少枚举语义</li><li>一个方法里塞了校验、组装、落库三段职责，难以测试</li><li>异常被吞掉，错误信息没有上下文</li></ul><h2>我们提炼的评审原则</h2><p>第一条：先问意图，再挑毛病。Review 的目的是帮作者把代码改好，而不是证明自己更厉害，讨论要围绕需求和设计意图展开。</p><p>第二条：一次只关注一个维度。性能和可读性不要混在一次评审里讨论，否则两边都聊不透。</p><p>第三条：评论给建议，不给命令。以开放式的提问引导作者自己发现问题，效果远好于直接指出答案。</p><blockquote>好的 Review 文化，是把每个人的代码都当作团队的代码。</blockquote><p>下一期分享会主题预告：数据库索引设计与慢查询排查，欢迎旁听。</p>',
   (SELECT id FROM category WHERE name = '活动动态'),
   'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=60',
-  1, '兴华小组', 329, '2026-03-05 09:30:00'
+  1, '雄心工作室', 329, '2026-03-05 09:30:00'
 WHERE EXISTS (SELECT 1 FROM category WHERE name = '活动动态')
   AND NOT EXISTS (SELECT 1 FROM article WHERE title = '技术分享会回顾：一次高质量的 Code Review');
 
@@ -145,7 +145,7 @@ SELECT
   '<p>三个月前我们启动了新人导师计划，每位新成员与一位有经验的组员结对，每周至少完成两小时结对编程。这篇复盘同时采访了导师和新人的视角。</p><h2>新人的收获</h2><p>结对编程最大的好处是即时反馈。写错了代码不用等报错解释，旁边的人立刻指出问题所在，还能当场讲清楚为什么。三个月下来，新人平均能独立完成一个完整页面的开发。</p><h2>导师的收获</h2><p>教是最好的学。讲解一个概念的过程，会逼着自己把模糊的理解梳理成清晰的表达。多位导师反馈，在指导过程中发现了自己平时忽略的细节，比如 Vue 响应式更新的边界情况。</p><h2>踩过的坑</h2><ul><li>一开始节奏太快，新人跟不上，后来约定每 25 分钟轮换一次键盘</li><li>导师直接动手写而不是引导思考，会让新人失去练习机会</li><li>缺少结构化安排，结对容易变成各自写各自的</li></ul><blockquote>结对编程不是两个人写一份代码，而是两个人一起学会一份代码。</blockquote><p>计划会继续，下一批招募预计在春季开学后开始。</p>',
   (SELECT id FROM category WHERE name = '活动动态'),
   'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=60',
-  1, '兴华小组', 176, '2026-01-05 10:00:00'
+  1, '雄心工作室', 176, '2026-01-05 10:00:00'
 WHERE EXISTS (SELECT 1 FROM category WHERE name = '活动动态')
   AND NOT EXISTS (SELECT 1 FROM article WHERE title = '新人导师计划：结对编程的经验与收获');
 
@@ -224,23 +224,23 @@ WHERE EXISTS (SELECT 1 FROM product_category WHERE name = '学习资源')
 
 INSERT INTO product (name, description, category_id, cover_image, price, status, created_at)
 SELECT
-  'XH-UI 轻量级组件库',
-  '小组自研的 Vue 3 组件库，按需加载、TypeScript 全类型支持，内置暗色主题与无障碍支持，已在多个内部项目中落地验证。',
+  '雄心UI 轻量级组件库',
+  '工作室自研的 Vue 3 组件库，按需加载、TypeScript 全类型支持，内置暗色主题与无障碍支持，已在多个内部项目中落地验证。',
   (SELECT id FROM product_category WHERE name = '开源组件'),
   'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=60',
   19.90, 1, '2025-12-10 11:00:00'
 WHERE EXISTS (SELECT 1 FROM product_category WHERE name = '开源组件')
-  AND NOT EXISTS (SELECT 1 FROM product WHERE name = 'XH-UI 轻量级组件库');
+  AND NOT EXISTS (SELECT 1 FROM product WHERE name = '雄心UI 轻量级组件库');
 
 INSERT INTO product (name, description, category_id, cover_image, price, status, created_at)
 SELECT
-  'XH-CLI 前端脚手架',
+  '雄心CLI 前端脚手架',
   '一条命令生成规范化的 Vue 3 + TypeScript 工程，内置代码规范检查、提交校验、自动化部署脚本，让项目初始化从半小时缩短到三十秒。',
   (SELECT id FROM product_category WHERE name = '效率工具'),
   'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=800&q=60',
   9.90, 1, '2026-01-08 16:00:00'
 WHERE EXISTS (SELECT 1 FROM product_category WHERE name = '效率工具')
-  AND NOT EXISTS (SELECT 1 FROM product WHERE name = 'XH-CLI 前端脚手架');
+  AND NOT EXISTS (SELECT 1 FROM product WHERE name = '雄心CLI 前端脚手架');
 
 INSERT INTO product (name, description, category_id, cover_image, price, status, created_at)
 SELECT

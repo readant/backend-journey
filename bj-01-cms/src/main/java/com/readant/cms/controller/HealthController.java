@@ -21,6 +21,6 @@ public class HealthController {
      */
     @GetMapping("/api/v1/health")
     public R<String> health() {
-        return R.success("兴华小组官网服务运行正常");
+        return R.success("雄心工作室官网服务运行正常");
     }
 }

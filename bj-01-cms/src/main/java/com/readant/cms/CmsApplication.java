@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 兴华小组官网 - 启动类
+ * 雄心工作室官网 - 启动类
  *
  * 这是整个项目的"总开关"。
  * @SpringBootApplication 是一个"便利贴"，贴在类上告诉 Spring：
