@@ -15,7 +15,7 @@
 
 ---
 
-四个真实业务项目，一套面向公开审查的 Java 后端作品集。
+一个已交付项目 + 三个规划中项目，一套面向公开审查的 Java 后端作品集。
 
 工程标准见 [.cursor/rules/core.mdc](.cursor/rules/core.mdc)：安全基线、交付门禁、文档举证不因"学习项目"豁免；学习导航作为附加价值保留。
 
@@ -27,7 +27,7 @@
 
 ## 项目路线
 
-四个项目按业务类型递进，每个项目自包含，可独立参考和部署。
+四个项目按业务类型递进，当前完成第一个，其余按计划推进；每个项目自包含，可独立参考和部署。
 
 | 项目 | 业务类型 | 状态 | 学习重点 |
 |------|---------|------|---------|
@@ -117,23 +117,50 @@ backend-journey/
 
 ## 快速开始
 
+### 1. 准备数据库
+
+只需本机装有 MySQL 8.x，**库和表都不用手工创建** —— Flyway 会在应用启动时自动建表并灌入演示数据。
+
+```sql
+CREATE DATABASE IF NOT EXISTS bj_cms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+### 2. 注入数据库口令
+
+口令通过环境变量 `DB_PASSWORD` 注入，仓库内不保存任何真实凭据（见 `.cursor/rules/security.mdc`）。
+
 ```bash
-# 克隆仓库
+# 方式一：临时设置，仅当前终端会话有效
+export DB_PASSWORD=你的本地MySQL密码        # Windows PowerShell: $env:DB_PASSWORD="你的密码"
+                                           # Windows cmd:        set DB_PASSWORD=你的密码
+
+# 方式二：用户级环境变量，一次设置后 IDE 与所有终端长期生效（设置后需重开 IDE）
+setx DB_PASSWORD "你的本地MySQL密码"
+```
+
+```text
+方式三：复制 .env.example 为 .env，由 VS Code 的 launch.json 自动读取；
+       使用 IDEA 时请在「运行配置 → Environment variables」中填写 DB_PASSWORD。
+```
+
+连接地址与用户名带有默认值（`localhost:3306/bj_cms`、`root`），需要覆盖时用同名环境变量 `DB_URL`、`DB_USERNAME`。
+
+> 若启动时报 `Access denied for user 'root'@'localhost'`，通常意味着 `DB_PASSWORD` 没有生效（应用以**空口令**连接）。请确认变量已设置，且设置后已重开终端或 IDE —— 环境变量的修改不会影响已经启动的进程。
+
+### 3. 编译与启动
+
+```bash
 git clone https://github.com/readant/backend-journey.git
 cd backend-journey/bj-01-cms
 
-# 设置数据库口令（凭据不入库，见 .cursor/rules/security.mdc）
-export DB_PASSWORD=你的本地MySQL密码        # Windows PowerShell: $env:DB_PASSWORD="你的密码"
-
-# 编译与测试
-mvn compile
-mvn test
-
-# 启动（需要本地 MySQL，默认不使用 dev profile）
+mvn compile     # 编译
+mvn test        # 全量测试
 mvn spring-boot:run
+```
 
-# 访问 API 文档（SpringDoc 2.x）
-open http://localhost:8080/swagger-ui/index.html
+```text
+访问 API 文档：http://localhost:8080/swagger-ui/index.html
+健康检查：    http://localhost:8080/api/v1/health
 ```
 
 > 管理接口需要请求头 `Authorization: Bearer <登录返回的token>`。登录接口与 `/api/v1/site/**` 前台接口无需鉴权。
