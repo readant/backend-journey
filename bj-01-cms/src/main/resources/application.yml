@@ -8,9 +8,13 @@ spring:
     name: bj-01-cms
 
   datasource:
-    url: jdbc:mysql://localhost:3306/bj_cms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${DB_PASSWORD}
+    # 非敏感项给默认值，克隆后无需改源码；password 只从环境变量取。
+    # 注意：Spring 绑定 @ConfigurationProperties 时对无法解析的占位符不报错，
+    # 会原样保留 "${DB_PASSWORD}" 字面量去连库，因此这里显式给空串默认值，
+    # 让失败落在 MySQL 认证环节，而不是冒充一个假口令。
+    url: "${DB_URL:jdbc:mysql://localhost:3306/bj_cms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}"
+    username: "${DB_USERNAME:root}"
+    password: "${DB_PASSWORD:}"
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
@@ -28,6 +32,18 @@ app:
   upload:
     path: uploads
     url-prefix: /uploads
+    # 上传目录会被映射成公开静态资源，所以只放行图片和 PDF。
+    # 加 html / svg 等于允许别人往你的域名里塞一段可执行脚本。
+    allowed-extensions: jpg,jpeg,png,gif,webp,pdf
+
+  auth:
+    # Token 有效期（秒），默认 2 小时。到期后需重新登录。
+    token-ttl-seconds: 7200
+
+  cors:
+    # 允许跨域的前端来源，逗号分隔；同源部署时留空即可（留空则完全不开放跨域）。
+    # 3001 = 前台门户，3002 = 管理后台（见各自 vite.config.ts）。
+    allowed-origins: http://localhost:3001,http://localhost:3002
 
 mybatis-plus:
   configuration:

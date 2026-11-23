@@ -7,9 +7,11 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @DisplayName("GlobalExceptionHandler 单元测试")
 class GlobalExceptionHandlerTest {
@@ -74,6 +76,22 @@ class GlobalExceptionHandlerTest {
 
             assertThat(result.getCode()).isEqualTo(400);
             assertThat(result.getMsg()).isEqualTo("参数校验失败");
+        }
+    }
+
+    @Nested
+    @DisplayName("handleNotFound")
+    class NotFoundCase {
+
+        @Test
+        @DisplayName("路径不存在 → 返回 404，而不是落进兜底变 500")
+        void shouldReturn404() {
+            NoResourceFoundException e = new NoResourceFoundException(HttpMethod.GET, "/api/v1/not-exist");
+
+            R<Void> result = handler.handleNotFound(e);
+
+            assertThat(result.getCode()).isEqualTo(404);
+            assertThat(result.getMsg()).isEqualTo("接口不存在");
         }
     }
 

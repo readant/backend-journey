@@ -3,6 +3,7 @@ package com.readant.cms.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.readant.cms.common.BusinessException;
+import com.readant.cms.common.Pages;
 import com.readant.cms.entity.Product;
 import com.readant.cms.mapper.ProductMapper;
 import com.readant.cms.service.ProductService;
@@ -37,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<Product>()
                 .eq(categoryId != null, Product::getCategoryId, categoryId)
                 .orderByDesc(Product::getCreatedAt);
-        return productMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        return productMapper.selectPage(Pages.of(pageNum, pageSize), wrapper);
     }
 
     @Override

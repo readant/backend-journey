@@ -3,6 +3,7 @@ package com.readant.cms;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 雄心工作室官网 - 启动类
@@ -13,10 +14,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @MapperScan 告诉 MyBatis-Plus："Mapper 接口都在这个包下面，帮我找到它们"
  *
+ * @EnableScheduling 打开定时任务开关，TokenService 靠它定期清理过期的 Token
+ *
  * main 方法是程序的入口，就像电灯开关——按下去，整个项目就启动了。
  */
 @SpringBootApplication
 @MapperScan("com.readant.cms.mapper")
+@EnableScheduling
 public class CmsApplication {
 
     public static void main(String[] args) {

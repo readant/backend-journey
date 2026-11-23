@@ -56,9 +56,10 @@ public class AdminServiceImpl implements AdminService {
         String token = tokenService.createToken(admin.getId());
         log.info("管理员登录成功: username={}", admin.getUsername());
 
-        // 5. 返回 Token + 管理员信息
+        // 5. 返回 Token + 有效期 + 管理员信息
         LoginVO loginVO = new LoginVO();
         loginVO.setToken(token);
+        loginVO.setExpiresIn(tokenService.getTtlSeconds());
         loginVO.setAdmin(toVO(admin));
         return loginVO;
     }

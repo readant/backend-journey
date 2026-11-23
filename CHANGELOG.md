@@ -8,6 +8,28 @@
 
 - 新增 `DashboardService`，数据看板统计逻辑从 Controller 下沉到 Service 层
 - 补齐单元测试：`R`、`GlobalExceptionHandler`、`DictDataService`、`ProductService`、`OperationLogService`、`DashboardService`
+- 新增 `Pages` 分页参数收敛工具，单页条数上限 100
+- 登录返回体新增 `expiresIn`（令牌有效期秒数）
+- 新增 `.mvn/jvm.config`，Maven 统一以 UTF-8 运行
+
+### Fixed
+
+- 访问不存在的路径返回 500 → 正确返回 404（`NoResourceFoundException` 单独处理）
+- 前台门户请求 `/api/v1/product-categories/tree` 被鉴权拦截返回 401 → 只读分类树放行
+- 文件上传因相对路径解析到 Tomcat 临时目录而必然失败 → 上传与静态映射统一使用绝对路径
+- Windows 控制台中文日志乱码 → Maven 与测试 JVM 编码统一为 UTF-8
+
+### Security
+
+- Token 增加有效期（默认 2 小时）并定期清理过期条目，避免内存只增不减
+- 文件上传增加扩展名白名单（jpg/jpeg/png/gif/webp/pdf），阻断上传 HTML/SVG 造成的存储型 XSS
+- 分页参数增加上限保护，防止 `pageSize` 过大拖垮数据库
+- 补充 CORS 白名单配置，未配置来源时不放开跨域
+
+### Changed
+
+- 统一响应增加 404 语义，前后端对"接口不存在"的判定不再依赖 500
+- 文档品牌名统一为「雄心工作室」，README 项目状态表述改为「已完成 1 个 + 规划 3 个」
 
 ## [1.0.0] - 2026-08-14
 

@@ -2,6 +2,7 @@ package com.readant.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.readant.cms.common.Pages;
 import com.readant.cms.entity.OperationLog;
 import com.readant.cms.mapper.OperationLogMapper;
 import com.readant.cms.service.OperationLogService;
@@ -24,6 +25,6 @@ public class OperationLogServiceImpl implements OperationLogService {
                 .eq(action != null && !action.isBlank(), OperationLog::getAction, action)
                 .orderByDesc(OperationLog::getCreatedAt);
 
-        return operationLogMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        return operationLogMapper.selectPage(Pages.of(pageNum, pageSize), wrapper);
     }
 }

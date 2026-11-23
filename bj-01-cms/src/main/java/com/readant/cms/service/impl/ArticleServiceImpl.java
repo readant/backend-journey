@@ -3,6 +3,7 @@ package com.readant.cms.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.readant.cms.common.BusinessException;
+import com.readant.cms.common.Pages;
 import com.readant.cms.dto.ArticleCreateReq;
 import com.readant.cms.dto.ArticleVO;
 import com.readant.cms.entity.Article;
@@ -60,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .orderByDesc(Article::getCreatedAt);
 
         // 分页查询
-        Page<Article> articlePage = articleMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        Page<Article> articlePage = articleMapper.selectPage(Pages.of(pageNum, pageSize), wrapper);
 
         // 转换为 VO
         Page<ArticleVO> voPage = new Page<>(articlePage.getCurrent(), articlePage.getSize(), articlePage.getTotal());

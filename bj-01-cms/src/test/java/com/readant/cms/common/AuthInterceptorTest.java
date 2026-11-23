@@ -41,7 +41,7 @@ class AuthInterceptorTest {
             assertThat(passed).isFalse();
             assertThat(response.getStatus()).isEqualTo(401);
             assertThat(response.getContentAsString()).contains("未登录或登录已过期");
-            verify(tokenService, never()).validateToken(org.mockito.ArgumentMatchers.anyString());
+            verify(tokenService, never()).getAdminId(org.mockito.ArgumentMatchers.anyString());
         }
 
         @Test
@@ -50,13 +50,13 @@ class AuthInterceptorTest {
             MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/v1/articles");
             request.addHeader(HttpHeaders.AUTHORIZATION, "Bearer bad-token");
             MockHttpServletResponse response = new MockHttpServletResponse();
-            when(tokenService.validateToken("bad-token")).thenReturn(false);
+            when(tokenService.getAdminId("bad-token")).thenReturn(null);
 
             boolean passed = authInterceptor.preHandle(request, response, new Object());
 
             assertThat(passed).isFalse();
             assertThat(response.getStatus()).isEqualTo(401);
-            verify(tokenService).validateToken("bad-token");
+            verify(tokenService).getAdminId("bad-token");
         }
 
         @Test
@@ -65,14 +65,12 @@ class AuthInterceptorTest {
             MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/v1/articles");
             request.addHeader(HttpHeaders.AUTHORIZATION, "Bearer good-token");
             MockHttpServletResponse response = new MockHttpServletResponse();
-            when(tokenService.validateToken("good-token")).thenReturn(true);
             when(tokenService.getAdminId("good-token")).thenReturn(42L);
 
             boolean passed = authInterceptor.preHandle(request, response, new Object());
 
             assertThat(passed).isTrue();
             assertThat(request.getAttribute(AuthInterceptor.ATTR_ADMIN_ID)).isEqualTo(42L);
-            verify(tokenService).validateToken("good-token");
         }
 
         @Test
@@ -84,7 +82,7 @@ class AuthInterceptorTest {
             boolean passed = authInterceptor.preHandle(request, response, new Object());
 
             assertThat(passed).isTrue();
-            verify(tokenService, never()).validateToken(org.mockito.ArgumentMatchers.anyString());
+            verify(tokenService, never()).getAdminId(org.mockito.ArgumentMatchers.anyString());
         }
     }
 }

@@ -47,7 +47,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 3. 校验失败：直接写 401，与 R.error(401, ...) 同构
-        if (token == null || token.isEmpty() || !tokenService.validateToken(token)) {
+        //    一次查询同时拿到"是否有效"和"是谁"，避免 validate + getAdminId 两次查表，
+        //    也避免两者之间 token 恰好过期导致 adminId 为 null 的竞态。
+        Long adminId = (token == null || token.isEmpty()) ? null : tokenService.getAdminId(token);
+        if (adminId == null) {
             log.warn("鉴权失败: uri={}, header存在={}", request.getRequestURI(), header != null);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=UTF-8");
@@ -56,7 +59,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 4. 校验通过：放行，并把 adminId 传给下游
-        request.setAttribute(ATTR_ADMIN_ID, tokenService.getAdminId(token));
+        request.setAttribute(ATTR_ADMIN_ID, adminId);
         return true;
     }
 }

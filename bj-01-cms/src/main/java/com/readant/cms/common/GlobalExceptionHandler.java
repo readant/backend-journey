@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * 全局异常处理器 —— 代码里的\"失物招领处\"
@@ -41,6 +42,20 @@ public class GlobalExceptionHandler {
         String message = fieldError != null ? fieldError.getDefaultMessage() : "参数校验失败";
         log.warn("参数校验失败: {}", message);
         return R.error(400, message);
+    }
+
+    /**
+     * 处理"路径不存在"
+     *
+     * Spring 6.1 起，访问未映射的路径会抛 NoResourceFoundException。若不单独接住，
+     * 它会落进下面的 Exception 兜底，变成 500「服务器内部错误」——明明是客户端敲错了地址，
+     * 却报成服务端故障，排查方向会被带偏。
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public R<Void> handleNotFound(NoResourceFoundException e) {
+        log.warn("请求路径不存在: {}", e.getResourcePath());
+        return R.error(404, "接口不存在");
     }
 
     /**

@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 @DisplayName("TokenService 单元测试")
 class TokenServiceTest {
 
-    private final TokenService tokenService = new TokenService();
+    /** 默认有效期 2 小时 */
+    private static final long TTL_SECONDS = 7200L;
+
+    private final TokenService tokenService = new TokenService(TTL_SECONDS);
 
     @Nested
     @DisplayName("createToken 方法")
@@ -59,6 +62,45 @@ class TokenServiceTest {
 
             assertThat(tokenService.validateToken(token)).isFalse();
             assertThat(tokenService.getAdminId(token)).isNull();
+        }
+    }
+
+    @Nested
+    @DisplayName("有效期（TTL）")
+    class Expiry {
+
+        @Test
+        @DisplayName("有效期内 → Token 有效，且能读到配置的秒数")
+        void shouldBeValidWithinTtl() {
+            TokenService service = new TokenService(60);
+
+            String token = service.createToken(1L);
+
+            assertThat(service.validateToken(token)).isTrue();
+            assertThat(service.getTtlSeconds()).isEqualTo(60);
+        }
+
+        @Test
+        @DisplayName("超过有效期 → Token 失效，adminId 取不到")
+        void shouldExpireAfterTtl() {
+            // TTL=0 表示生成即过期，无需在测试里 sleep
+            TokenService service = new TokenService(0);
+
+            String token = service.createToken(1L);
+
+            assertThat(service.validateToken(token)).isFalse();
+            assertThat(service.getAdminId(token)).isNull();
+        }
+
+        @Test
+        @DisplayName("清扫过期条目后再访问，仍然安全返回 null")
+        void shouldReturnNullAfterPurge() {
+            TokenService service = new TokenService(0);
+            String token = service.createToken(1L);
+
+            service.purgeExpired();
+
+            assertThat(service.validateToken(token)).isFalse();
         }
     }
 }
