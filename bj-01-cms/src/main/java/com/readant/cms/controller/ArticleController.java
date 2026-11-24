@@ -33,8 +33,9 @@ public class ArticleController {
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(required = false) Integer status,
-            @RequestParam(required = false) Long categoryId) {
-        return R.success(articleService.page(pageNum, pageSize, status, categoryId));
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String keyword) {
+        return R.success(articleService.page(pageNum, pageSize, status, categoryId, keyword));
     }
 
     @LogOperation(module = "文章", action = "更新")

@@ -8,15 +8,24 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.readant.cms.common.BusinessException;
+import com.readant.cms.dto.ArticleBriefVO;
 import com.readant.cms.dto.ArticleCreateReq;
+import com.readant.cms.dto.ArticleNavVO;
 import com.readant.cms.dto.ArticleVO;
 import com.readant.cms.entity.Article;
 import com.readant.cms.entity.Category;
 import com.readant.cms.mapper.ArticleMapper;
 import com.readant.cms.mapper.CategoryMapper;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
+import org.apache.ibatis.builder.MapperBuilderAssistant;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -38,6 +47,16 @@ class ArticleServiceImplTest {
 
     @InjectMocks
     private ArticleServiceImpl articleService;
+
+    /**
+     * LambdaQueryWrapper 解析 lambda 到列名依赖 MP 的表信息缓存（通常由容器启动时注册 Mapper 建立）。
+     * 纯单元测试环境手动初始化 Article 的缓存，否则断言 getSqlSegment 会抛
+     * "can not find lambda cache"。
+     */
+    @BeforeAll
+    static void initTableInfo() {
+        TableInfoHelper.initTableInfo(new MapperBuilderAssistant(new MybatisConfiguration(), ""), Article.class);
+    }
 
     private Article buildArticle(Long id, String title, Integer status, Long categoryId) {
         Article article = new Article();
@@ -129,11 +148,29 @@ class ArticleServiceImplTest {
             articlePage.setRecords(Collections.singletonList(article));
             when(articleMapper.selectPage(any(Page.class), any())).thenReturn(articlePage);
 
-            Page<ArticleVO> result = articleService.page(1, 10, 1, null);
+            Page<ArticleVO> result = articleService.page(1, 10, 1, null, null);
 
             assertThat(result.getTotal()).isEqualTo(1);
             assertThat(result.getRecords()).hasSize(1);
             assertThat(result.getRecords().get(0).getCategoryName()).isNull();
+        }
+
+        @Test
+        @DisplayName("带关键词 → 标题与摘要进入 LIKE 条件")
+        void shouldApplyKeyword_whenProvided() {
+            Page<Article> articlePage = new Page<>(1, 10, 0);
+            articlePage.setRecords(Collections.emptyList());
+            when(articleMapper.selectPage(any(Page.class), any())).thenReturn(articlePage);
+
+            articleService.page(1, 10, 1, null, "Vue");
+
+            @SuppressWarnings("unchecked")
+            ArgumentCaptor<LambdaQueryWrapper<Article>> captor = ArgumentCaptor.forClass(LambdaQueryWrapper.class);
+            verify(articleMapper).selectPage(any(Page.class), captor.capture());
+            LambdaQueryWrapper<Article> wrapper = captor.getValue();
+            // OR 必须出现在分组括号内：验证标题与摘要之一命中即算匹配，且不破坏 status/category 条件
+            assertThat(wrapper.getSqlSegment()).contains("LIKE");
+            assertThat(wrapper.getSqlSegment()).contains(" OR ");
         }
 
         @Test
@@ -148,9 +185,114 @@ class ArticleServiceImplTest {
             category.setName("公司新闻");
             when(categoryMapper.selectById(10L)).thenReturn(category);
 
-            Page<ArticleVO> result = articleService.page(1, 10, 1, 10L);
+            Page<ArticleVO> result = articleService.page(1, 10, 1, 10L, null);
 
             assertThat(result.getRecords().get(0).getCategoryName()).isEqualTo("公司新闻");
+        }
+    }
+
+    @Nested
+    @DisplayName("navigation 方法")
+    class Navigation {
+
+        @Test
+        @DisplayName("两侧都有相邻文章 → 返回 prev 与 next")
+        void shouldReturnBoth_whenNeighborsExist() {
+            when(articleMapper.selectById(5L)).thenReturn(buildArticle(5L, "当前", 1, 10L));
+            when(articleMapper.selectOne(any()))
+                    .thenReturn(buildArticle(4L, "上一篇", 1, 10L), buildArticle(6L, "下一篇", 1, 10L));
+
+            ArticleNavVO nav = articleService.navigation(5L);
+
+            assertThat(nav.getPrev().getId()).isEqualTo(4L);
+            assertThat(nav.getNext().getId()).isEqualTo(6L);
+        }
+
+        @Test
+        @DisplayName("首篇无上一篇 → prev 为 null")
+        void shouldReturnNullPrev_whenFirstArticle() {
+            when(articleMapper.selectById(1L)).thenReturn(buildArticle(1L, "当前", 1, 10L));
+            when(articleMapper.selectOne(any())).thenReturn(null, buildArticle(2L, "下一篇", 1, 10L));
+
+            ArticleNavVO nav = articleService.navigation(1L);
+
+            assertThat(nav.getPrev()).isNull();
+            assertThat(nav.getNext().getId()).isEqualTo(2L);
+        }
+
+        @Test
+        @DisplayName("文章不存在 → 抛出业务异常 404")
+        void shouldThrow_whenNotFound() {
+            when(articleMapper.selectById(9L)).thenReturn(null);
+
+            assertThatThrownBy(() -> articleService.navigation(9L))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage("文章不存在");
+        }
+    }
+
+    @Nested
+    @DisplayName("related 方法")
+    class Related {
+
+        @Test
+        @DisplayName("文章不存在 → 抛出业务异常 404")
+        void shouldThrow_whenNotFound() {
+            when(articleMapper.selectById(9L)).thenReturn(null);
+
+            assertThatThrownBy(() -> articleService.related(9L, 5))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage("文章不存在");
+        }
+
+        @Test
+        @DisplayName("无栏目 → 返回空列表且不查询")
+        void shouldReturnEmpty_whenNoCategory() {
+            when(articleMapper.selectById(1L)).thenReturn(buildArticle(1L, "当前", 1, null));
+
+            assertThat(articleService.related(1L, 5)).isEmpty();
+            verify(articleMapper, never()).selectList(any());
+        }
+
+        @Test
+        @DisplayName("同栏目文章 → 映射为简要 VO")
+        void shouldReturnBriefs_whenSameCategory() {
+            when(articleMapper.selectById(5L)).thenReturn(buildArticle(5L, "当前", 1, 10L));
+            Article a = buildArticle(3L, "相关一", 1, 10L);
+            a.setCreatedAt(LocalDateTime.of(2026, 1, 2, 0, 0));
+            Article b = buildArticle(4L, "相关二", 1, 10L);
+            b.setCreatedAt(LocalDateTime.of(2026, 1, 3, 0, 0));
+            when(articleMapper.selectList(any())).thenReturn(List.of(a, b));
+
+            List<ArticleBriefVO> result = articleService.related(5L, 5);
+
+            assertThat(result).hasSize(2);
+            assertThat(result.get(0).getId()).isEqualTo(3L);
+            assertThat(result.get(0).getTitle()).isEqualTo("相关一");
+        }
+
+        @Test
+        @DisplayName("limit 超过上限 → 收敛到 10")
+        void shouldClampLimit_whenExceeded() {
+            when(articleMapper.selectById(5L)).thenReturn(buildArticle(5L, "当前", 1, 10L));
+            when(articleMapper.selectList(any())).thenReturn(Collections.emptyList());
+
+            articleService.related(5L, 99);
+
+            @SuppressWarnings("unchecked")
+            ArgumentCaptor<LambdaQueryWrapper<Article>> captor = ArgumentCaptor.forClass(LambdaQueryWrapper.class);
+            verify(articleMapper).selectList(captor.capture());
+            assertThat(captor.getValue().getSqlSegment()).contains("LIMIT 10");
+        }
+
+        @Test
+        @DisplayName("limit 收敛函数：下限 1、上限 10")
+        void shouldNormalizeLimit() {
+            assertThat(ArticleServiceImpl.normalizeRelatedLimit(99)).isEqualTo(10);
+            assertThat(ArticleServiceImpl.normalizeRelatedLimit(10)).isEqualTo(10);
+            assertThat(ArticleServiceImpl.normalizeRelatedLimit(5)).isEqualTo(5);
+            assertThat(ArticleServiceImpl.normalizeRelatedLimit(0)).isEqualTo(1);
+            assertThat(ArticleServiceImpl.normalizeRelatedLimit(-5)).isEqualTo(1);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.readant.cms.controller;
 
 import com.readant.cms.common.R;
+import com.readant.cms.dto.ArticleBriefVO;
+import com.readant.cms.dto.ArticleNavVO;
 import com.readant.cms.dto.ArticleVO;
 import com.readant.cms.entity.Category;
 import com.readant.cms.service.*;
@@ -26,7 +28,7 @@ public class SiteController {
     public R<Map<String, Object>> home() {
         Map<String, Object> data = new HashMap<>();
         data.put("categories", categoryService.getTree());
-        data.put("latestArticles", articleService.page(1, 6, 1, null).getRecords());
+        data.put("latestArticles", articleService.page(1, 6, 1, null, null).getRecords());
         data.put("latestProducts", productService.page(1, 6, null).getRecords());
         return R.success(data);
     }
@@ -50,8 +52,19 @@ public class SiteController {
     public R<?> articleList(
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(required = false) Long categoryId) {
-        return R.success(articleService.page(pageNum, pageSize, 1, categoryId));
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String keyword) {
+        return R.success(articleService.page(pageNum, pageSize, 1, categoryId, keyword));
+    }
+
+    @GetMapping("/articles/{id}/navigation")
+    public R<ArticleNavVO> articleNavigation(@PathVariable Long id) {
+        return R.success(articleService.navigation(id));
+    }
+
+    @GetMapping("/articles/{id}/related")
+    public R<List<ArticleBriefVO>> articleRelated(@PathVariable Long id, @RequestParam(defaultValue = "5") int limit) {
+        return R.success(articleService.related(id, limit));
     }
 
     @GetMapping("/products")
