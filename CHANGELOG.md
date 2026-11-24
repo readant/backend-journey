@@ -11,6 +11,9 @@
 - 新增 `Pages` 分页参数收敛工具，单页条数上限 100
 - 登录返回体新增 `expiresIn`（令牌有效期秒数）
 - 新增 `.mvn/jvm.config`，Maven 统一以 UTF-8 运行
+- 文章列表支持关键词搜索：`keyword` 命中标题或摘要之一（OR 分组，不破坏状态与栏目过滤），管理端与前台接口同步生效
+- 新增文章导航接口 `GET /api/v1/site/articles/{id}/navigation`（上一篇 / 下一篇，按已发布文章 id 相邻取值，边界返回 null）
+- 新增相关文章接口 `GET /api/v1/site/articles/{id}/related`（同栏目剔除自身，条数收敛 1–10）
 
 ### Fixed
 

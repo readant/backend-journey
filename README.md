@@ -102,6 +102,22 @@ backend-journey/
 
 > 前端学习同样遵循「项目驱动」路线，按业务类型递进，可与本仓库各后端项目一一对应。
 
+### bj-01-cms 界面预览
+
+前台门户（pj-01-cms-portal）的真实运行截图，页面数据均来自本仓库 bj-01-cms 的后端接口：
+
+| 首页 | 作品列表 |
+| :---: | :---: |
+| ![门户首页](docs/images/portal-home.png) | ![作品列表](docs/images/portal-products.png) |
+
+| 全部文章 | 文章详情 |
+| :---: | :---: |
+| ![全部文章](docs/images/portal-articles.png) | ![文章详情](docs/images/portal-article-detail.png) |
+
+| 作品详情 |
+| :---: |
+| ![作品详情](docs/images/portal-product-detail.png) |
+
 ---
 
 ## 仓库地址
